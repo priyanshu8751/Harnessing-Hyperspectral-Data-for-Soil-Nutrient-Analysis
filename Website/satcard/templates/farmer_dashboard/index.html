@@ -1,0 +1,3340 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang= "en">
+  <head>
+    <meta charset = "utf-8" />
+    <meta
+    meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SATCARD</title> 
+    <!-- Favicon -->
+    <!-- <link rel = "icon" type = "image/x-icon" href = "{% static 'farmer_dashboard/assets/img/favicon/favicon.ico'%}" /> -->
+    <!-- Fonts -->
+    <link rel = "preconnect" href = "https://fonts.googleapis.com" />
+    <link rel = "preconnect" href = "https://fonts.gstatic.com" crossorigin />
+    <link
+      href = "https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel  = "stylesheet"/>
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel = "stylesheet" href = "{% static 'farmer_dashboard/assets/vendor/fonts/boxicons.css' %}" />
+
+    <!-- Core CSS -->
+    <link rel = "stylesheet" href = "{%static 'farmer_dashboard/assets/vendor/css/core.css' %}" class          = "template-customizer-core-css" />
+    <link rel = "stylesheet" href = "{% static 'farmer_dashboard/assets/vendor/css/theme-default.css' %}" class = "template-customizer-theme-css" />
+    <link rel = "stylesheet" href = "{% static 'farmer_dashboard/assets/css/demo.css'% }"/>
+
+    <!-- Vendors CSS -->
+    <link rel = "stylesheet" href = "{% static 'farmer_dashboard/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css'%}" />
+
+    <link rel = "stylesheet" href = "{% static 'farmer_dashboard/assets/vendor/libs/apex-charts/apex-charts.css' %}" />
+
+    <link href = "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel = "stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- for the details box -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+
+    <!-- Page CSS -->
+    <style type = "text/css">
+
+      #imageContainer {
+          position: relative;
+          display : inline-block;
+      }
+
+      #highlightBox {
+          position     : absolute;
+          border       : 2px solid cyan;
+          border-radius: 5px;
+          opacity      : 0.4;
+          box-sizing   : border-box;
+          display      : none;
+      }
+
+       .content-wrapper {
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+        body, html {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+      }
+      .layout-page {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+      .card-3 .row{
+          justify-content: center;
+      }
+      .card-3 .row3{
+          margin: 5% 0 1rem;
+      }
+
+      .img-fluid{
+          float      : right;
+          width      : 65%;
+          display    : flex;
+          align-items: center;
+      }
+      .row2 .img-fluid{
+          margin : 10% 0;
+          opacity: 0.5;
+          width  : 60px;
+      }
+      /* http://127.0.0.1:8000/farmer_dashboard1/1/ */
+
+      .bg-card-image {
+          
+          background-size    : cover;
+          background-position: center;
+          position           : relative;
+          object-fit         : cover;
+      }
+
+      .bg-card-content {
+          background-color: rgba(255, 255, 255, 0.75);  /* Adjust the opacity value (0.5) as needed */
+          position        : absolute;
+          color           : black;
+      }
+
+      .param-card {
+          background-color: rgba(255, 255, 255, 1);  /* Adjust the opacity value (0.5) as needed */
+          position        : absolute;
+      }
+
+      .parent {
+        position: relative;
+        top     : 0;
+        left    : 0;
+      }
+      .image_base {
+        position: relative;
+        top     : 0;
+        left    : 0;
+      }
+      .image_overlay {
+        position: absolute;
+        top     : 0px;
+        left    : -30px;
+      }
+
+      .badge-notifications {
+    top        : 0.5rem;
+    line-height: .75rem;
+    font-size  : .582rem;
+    padding    : 0.2rem 0.4rem;
+    position   : absolute;
+      /* top: auto; */
+    display  : inline-block;
+    margin   : 0;
+    transform: translate(-50%, -30%);
+      }
+
+  /* Custom CSS for the Weather Station Card */
+.weather-card {
+  height         : 400px;                                                            /* Adjust the height as needed */
+  /* background     : url("{% static 'farmer_dashboard/assets/img/backgrounds/crop_bg_1.png' %}"); */
+  background-size: cover;
+}
+
+.weather-image-container {
+  position       : relative;
+  height         : 100%;      /* Ensure the image container takes up the full height */
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+}
+
+.image_base {
+  max-height: 100%;
+  max-width : 100%;
+  width     : auto;
+  height    : auto;
+} 
+.grass-background {
+  /* Replace 'path-to-your-grass-image.jpg' with the actual path to your grass image */
+  background-size  : 100% 100%;
+  background-repeat: no-repeat;
+  
+}
+.soil-background{
+  /* Replace 'path-to-your-grass-image.jpg' with the actual path to your grass image */
+  background-size  : 100% 100%;
+  background-repeat: no-repeat;
+  
+}
+
+.card-header .fw-semibold span{
+  display: inline-block;
+  background-color: lightgreen;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.app-brand-logo.demo svg {
+    width: 22px;
+    height: 38px;
+}
+small{
+  color:white;
+}
+
+
+.container-xxl {
+            max-width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+  }
+
+  /* Make the video container responsive */
+  .video-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 aspect ratio (change as needed) */
+  }
+
+  .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+
+  /* Adjust card widths */
+  .card {
+      width: relative;
+  }
+
+  /* Adjust spacing */
+  .mb-3 {
+      margin-bottom: 1rem;
+  }
+
+  .my-3 {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+  }
+  
+  /* Remove extra space on the right side */
+  body {
+      overflow-x: hidden;
+  }
+  html, body {
+    /* overflow: hidden; */
+    margin:0;
+    padding:0;
+    /* margin-bottom: -50%; */
+  }
+  
+  .card{
+    overflow-y:scroll;
+    overflow-x:hidden;
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+.card::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.card { /* Assuming .card is the direct parent of .timeline */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: hidden; /* Prevent vertical scrolling */
+}
+
+
+.timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 0; /* Remove padding if any */
+    margin: 0; /* Remove margin to fit within the card */
+    /* background-color: #fff; */
+    /* border-radius: 10px; */ 
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
+    min-width: 600px; 
+    overflow-x: hidden;
+}
+
+.phase {
+    flex: 0 0 auto; /* Prevent flex items from shrinking */
+}
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: #000;
+    z-index: 0;
+    border-top: 2px dotted #000;
+    overflow-x: hidden;
+  }
+
+  .phase {
+    text-align: center;
+    z-index: 1;
+  }
+
+  /* .circle {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: relative;
+    border: 3px solid transparent; /* Add border for transition */
+   
+  .circle {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: relative;
+    border: 3px solid transparent; /* Add border for transition */
+    background-size: cover; /* Cover the entire area of the circle */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+}
+
+
+  .phase.active .circle {
+    background-color: #4caf50; /* Highlight color */
+    border-color: #4caf50; /* Highlight border */
+    
+  }
+
+  .circle img {
+    width: 50%;
+  }
+  .timeline-container {
+    flex-grow: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    /* Remove padding from .timeline and add it here if necessary */
+}
+
+  @media (max-width: 768px) {
+    .phase .circle {
+        height: 60px;
+        width: 60px;
+    }
+
+    .timeline::before {
+        left: 20px;
+        right: 20px;
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline {
+        flex-direction: column;
+        overflow-x: hidden;
+    }
+
+    .timeline::before {
+        top: 40px;
+        left: 50%;
+        right: auto;
+        height: auto;
+        width: 2px;
+        bottom: 40px;
+        transform: translateX(-50%);
+        overflow-x: hidden;
+        
+    }
+
+    .phase {
+        margin-bottom: 20px;
+    }
+}
+.card-footer ~ .timeline-container {
+    padding-bottom: 50px; /* Adjust as needed to match the footer height */
+}
+
+.aspect-ratio-box {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.aspect-ratio-box-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.timeline-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.timeline-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.active-circle {
+  transform: scale(1.2); /* Scale the circle to 120% of its original size */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for the scaling */
+  z-index: 2; /* Make sure the active circle is above the others */
+}
+.circle {
+    transform: scale(0.6); /* 80% of the original size */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for scaling */
+}
+
+/* When the circle is inside an active phase, reset its size to normal */
+.phase.active .circle {
+    transform: scale(1); /* Reset to original size */
+    z-index: 10; /* Ensure the circle is above other elements */
+}
+
+/* ... existing styles ... */
+
+/* Ensure there's a little space around the timeline to accommodate the smaller circles */
+.timeline-container {
+    padding: 5% 0; /* Adjust the percentage as needed */
+}
+
+/* .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px; /* Adjust padding as needed */
+    /* Additional styling */
+
+
+    /*  styles for wms center tile */
+    .card-header-buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    .card-image-container {
+      height: calc(100% - 56px);
+      background: url('./wms2.png') no-repeat center center;
+      background-size: 100% 100%;
+      position: relative;
+    }
+    .arrow-box {
+      display: none;
+      position: absolute;
+      width: 200px;
+      text-align: center;
+      padding: 10px;
+      background: transparent;
+      border: 50px hidden #000000;
+      border-radius: 50%;
+      z-index: 10;
+    }
+    .arrow-box-top {
+      top: 10%;
+      left: 0;
+    }
+    /* Increase the top value as the viewport width increases */
+
+
+    .arrow-box-bottom {
+      bottom: 0;
+      left: 0%;
+      flex-direction: row;
+    }
+    .arrow-box-middle {
+      top: 55%;
+      right: 0%;
+      transform: translateY(-50%);
+    }
+    
+    .content-box ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .content-box ul li {
+      padding: 5px 0;
+    }
+
+    .parameter-panel-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: flex-start;
+    }
+
+  .parameter-panel {
+          /* padding: 10px; */
+          display: flex;
+          align-items: center;
+          border-radius: 8px;/* */
+        /*  background: rgba(255, 255, 255, 0.5);  Semi-transparent background */
+         /* backdrop-filter: blur(5px); /* Blur effect for the background */
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);/**/
+          /* border: 1px solid rgba(255, 255, 255, 0.2); Slight white border for visibility */
+          margin-top: 10px;
+          padding: 0px;
+          width: 80%;
+      }
+
+      /* .parameter-panel img {
+          height: 30px;
+          margin-right: 10px;
+      } */
+
+      .parameter-panel span {
+          font-size:small;
+          font-weight:bold;
+          color: #000000;
+      }
+      .parameter-content {
+        display: flex;
+        justify-content: space-between; /* This will ensure the name and value are on opposite ends */
+        width: 100%; /* Take up the full width of the panel */
+    }
+
+.parameter-name, .parameter-value {
+    flex-basis: 50%; /* Allocate equal width to both columns */
+}
+
+.parameter-name {
+    /* Align to the start (left) */
+    text-align: left;
+}
+
+.parameter-value {
+    /* Align to the end (right) */
+    text-align: right;
+    font-weight: bold;
+}
+      
+
+
+.parameter-item {
+    visibility: hidden;
+}
+
+/* Animation */
+@keyframes fadeInSlideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+        visibility: visible;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+}
+
+/* Animation trigger */
+.animate-in {
+    animation: fadeInSlideDown 0.5s ease forwards;
+}
+
+/* Optional: Control the timing of each animation using a delay class */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+/* Add as many delay classes as you need */
+
+
+.parameter-btn {
+  display: flex; /* Display block to fill the width */
+  justify-content: center;
+  width: 100%; /* Use the full width */
+}
+.parameter-btn {
+  /* border: 0.3px groove black; rgb(241,228,243) */
+  background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+  color: #1d1717; /* Text color */
+  box-shadow: 55px 5px 10px rgba(46, 46, 46, 0.1);  /*Slight shadow for depth */
+  font-weight: small; /* Bold text */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+
+/* /// */
+.plant-btn{
+  border: 3px solid rgb(202,241,202);
+}
+.environment-btn{
+  border: 3px solid rgb(169, 204, 242);
+}
+.soil-btn{
+  border: 3px solid rgb(245,205,179);
+}
+
+.plant-btn:hover {
+  
+  background: rgb(202,241,202); /* Slightly less transparent on hover */
+  color: #000; /* Darker text on hover */
+} 
+.environment-btn:hover {
+  background: rgb(196, 216, 240); /* Slightly less transparent on hover */
+  color: #000; /* Darker text on hover */
+} 
+.soil-btn:hover {
+  background: rgb(245,205,179); /* Slightly less transparent on hover */
+  color: #000; /* Darker text on hover */
+} 
+.plant-btn-active {
+  background: rgb(202,241,202); /* Slightly less transparent on hover */
+  color: #000; /* Darker text on hover */
+} 
+.environment-btn-active {
+  background: rgb(169, 204, 242); /* Slightly less transparent on hover */
+  color: #000; /* Darker text on hover */
+} 
+.soil-btn-active {
+  background: rgb(245,205,179); /* Slightly less transparent on hover */
+  color: #000; /* Darker text on hover */
+} 
+
+/* Assuming you are using Bootstrap Icons, adjust the classes as necessary */
+.parameter-item {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  margin: 3px 0;
+  /*background: rgba(255, 255, 255, 0.3);  Semi-transparent background */
+  /*border-radius: 4px;  Rounded corners */
+}
+
+.parameter-item .bi { /* Adjust the class if not using Bootstrap Icons */
+  font-size: 1.5rem; /* Larger icons */
+  margin-right: 10px;
+}
+
+/* Example of specific icons styling */
+.bi-thermometer-half { color: #FF6347; }
+.bi-wind { color: #1E90FF; }
+.bi-moisture { color: #00FA9A; }
+.bi-sun { color: #FFD700; }
+.bi-cloud-rain { color: #87CEEB; }
+.bi-droplet { color: #00BFFF; }
+.bi-speedometer2 { color: #32CD32; }
+.bi-tree { color: #28a745; } /* Green for the plant icon */
+.bi-cloud { color: #1E90FF;} /* Grey for the environment icon */
+.bi-flower1 { color: #ffc107; }
+
+
+.parameter-btn .bi {
+  margin-right: 10px; /* Add some space between the icon and text */
+  padding: 0px;
+}
+
+.parameter-btn .btn-text {
+  flex-grow: 1; /* Make the text take up the remaining space */
+  text-align: center; /* Center the text */
+}
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* CSS for the details box */
+#details-box {
+  display: none;  /*Hidden by default */
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+/* weather forecast tile */
+.weather-card {
+        width: auto;
+        height: auto;
+        background: #FFFFFF;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        font-size: 14px;
+    }
+
+    .weather-header {
+        background: #E0ECF8;
+        padding: 10px 20px;
+        color: #333;
+    }
+
+    .current-date {
+        font-weight: bold;
+    }
+
+    .weather-condition-summary {
+        font-size: 12px;
+    }
+
+    .weather-tabs {
+        display: flex;
+        background: #F8F8F8;
+        padding: 5px 0;
+        justify-content: space-around;
+        border-bottom: 1px solid #DDD;
+    }
+
+    .tab-button {
+        background: none;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        color: #333;
+        border-radius: 4px;
+    }
+
+    .tab-button.active {
+        background: #E0ECF8;
+    }
+
+    .weather-details {
+      margin-top: 20px;
+        padding: 20px;
+    }
+
+    .forecast-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .temperature {
+        color: #E37222;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .weather-parameters {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .parameter {
+        text-align: center;
+    }
+
+    .parameter img {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 5px;
+    }
+
+    .weather-timeline {
+        padding: 10px 20px;
+    }
+    .weather-forecast {
+  display: none; /* Hide all forecast sections by default */
+}
+
+.weather-forecast.active {
+  display: block; /* Show the active forecast section */
+}
+.next-week-table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.next-week-table th, 
+.next-week-table td {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+.next-week-table th {
+    background-color: #f8f8f8;
+}
+
+.next-week-table img {
+    width: 30px;
+    height: 30px;
+}
+    
+
+/* css for details box */
+.btn-secondary.active {
+  background-color: #007bff; /* Bootstrap primary color for example */
+  border-color: #007bff;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Glowing effect */
+}
+
+/* Additional styling to improve the modal's appearance */
+.parameter-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+  margin-right: 15px;
+}
+
+.parameter-stats > div {
+  display: none;
+  padding: 5px 10px;
+  background-color: rgb(224,236,248);
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  font-size: small;
+  color: black;
+}
+
+
+  .gaugeDiv {
+    /* Styling for the gauge itself */
+    font-family: 'Roboto', sans-serif; /* Modern, clean font */
+  }
+  #unitDisplay {
+    text-align: right;
+    font-style: italic;
+    /* Add any additional styling as needed */
+  }
+
+
+/* Alert notification tile styles */
+.alert-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distributes space evenly */
+  height: 100%; /* Use full height of the carousel item */
+  padding: 0px;
+  overflow-y: auto; /* Enables vertical scrolling */
+  background: #A0A0A0;
+  border-radius: 10px;
+  position: relative;
+  color: black;
+}
+.alert-header,
+.alert-footer {
+  flex-shrink: 0; /* Prevents the header and footer from shrinking */
+}
+
+.alert-body {
+  flex: 1; /* Allows the body to expand and fill space */
+  overflow-y: auto; /* Enables scrolling on the body content if needed */
+}
+
+
+
+
+.alert-icon {
+  font-size: 20px; /* Adjust size as needed */
+}
+
+.alert-title {
+  font-size: 1.1em;
+  margin: 3px 0;
+  font-style: bold;
+}
+
+.alert-description {
+  font-size: 1em;
+  color: grey;
+}
+
+.alert-timestamp {
+
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Carousel styles */
+#alertCarousel .carousel-inner {
+  height: 100%;
+}
+
+/* Each carousel item should also take full height */
+#alertCarousel .carousel-item {
+  height: 100%;
+}
+
+.alert-card {
+  background: #A0A0A0; /* Replace with your preferred color */
+  border-radius: 10px;
+  padding: 10px;
+  color: black;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  height: 100%; /* Take full height */
+}
+#alertCarousel {
+  position: relative;
+  height: 25vh; /* Adjust height as needed */
+}
+
+.alert-footer{
+  display: flex;
+  align-items:self-end;
+  justify-content: flex-end;
+}
+
+
+/* Arrow styles */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  /* background-color: #fffdfde2; Arrow background color */
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  border: none;
+  background-image: none;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%; /* Control the hit area size */
+  height: 100%;
+}
+
+.carousel-control-prev {
+  left: 0; /* Adjust position as needed */
+}
+
+.carousel-control-next {
+  right: 0; /* Adjust position as needed */
+}
+/* Tasks Tile styles */
+
+.task-card .card-body {
+  overflow-y: auto; /* Make the card content scrollable */
+  padding: 10px;
+  background: #f8f9fa;
+}
+
+
+.task .days-left {
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 5px 10px;
+  color: white;
+  background-color: #4e73df; /* Separate color for days left */
+  border-radius: 5px; /* Rounded corners for badge */
+}
+
+
+.task-card {
+  display: flex;
+  flex-direction: column;
+  height: 30vh; /* Set a fixed height for the card */
+}
+
+.task-card .card-header {
+  background-color: #4e73df;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.task-card .tab-content {
+  overflow-y: auto; /* Make the card content scrollable */
+  padding: 10px;
+  background: #f8f9fa;
+  height: calc(30vh - 90px); /* Adjust height taking header and footer into account */
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.task:nth-child(odd) {
+  background-color: #e9ecef; /* Light grey for odd tasks */
+}
+
+.task:nth-child(even) {
+  background-color: #f8f9fa; /* Slightly lighter for even tasks */
+}
+
+.task .badge {
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px; /* Rounded corners for badge */
+}
+
+
+.task .task-description {
+  color: #5a5c69; /* Darker text color for better readability */
+  margin-left: 10px; /* Space between badge and description */
+  flex-grow: 1; /* Allow the description to fill the space */
+}
+
+/* Card footer with tabs */
+.task-card .card-footer .nav-tabs {
+  border-bottom: none;
+}
+
+.task-card .card-footer .nav-link {
+  border: none;
+  border-radius: 0;
+}
+
+.task-card .card-footer .nav-link.active {
+  background-color: #4e73df;
+  color: white;
+}
+
+
+
+    
+    </style>
+
+    <!-- Helpers -->
+    <script src = "{% static 'farmer_dashboard/assets/vendor/js/helpers.js'%}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config: Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src = "{% static 'farmer_dashboard/assets/js/config.js'%}"></script>
+  </head>
+
+  <body>
+    
+    <!-- Layout wrapper -->
+    <div class = "layout-wrapper layout-content-navbar">
+    <div class = "layout-container">
+        <!-- Menu -->
+        
+        <aside id    = "layout-menu" class = "layout-menu menu-vertical menu bg-menu-theme" style="margin:0px" style="height:100vh;">
+            
+            
+            <div   class = "app-brand demo">
+                <a     href  = "index.html" class  = "app-brand-link">
+                <span  class = "app-brand-logo demo">
+                        <svg
+           xmlns   :dc                  = "http://purl.org/dc/elements/1.1/"
+           xmlns   :cc                  = "http://creativecommons.org/ns#"
+           xmlns   :rdf                 = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns   :svg                 = "http://www.w3.org/2000/svg"
+                    xmlns               = "http://www.w3.org/2000/svg"
+           xmlns   :sodipodi            = "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+           xmlns   :inkscape            = "http://www.inkscape.org/namespaces/inkscape"
+                    version             = "1.1"
+                    id                  = "svg108075"
+           xml     :space               = "preserve"
+                    width               = "800"
+                    height              = "800"
+                    viewBox             = "0 0 800 800"
+           sodipodi:docname             = "tractor-color-outline-publicdomainvectors.org.svg"
+           inkscape:version             = "0.92.4 (5da689c313, 2019-01-14)"><metadata
+                    id                  = "metadata108081"><rdf:RDF><cc:Work
+           rdf     :about               = ""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf     :resource            = "http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+                    id                  = "defs108079"><clipPath
+                    clipPathUnits       = "userSpaceOnUse"
+                    id                  = "clipPath108091"><path
+                    d                   = "M 0,600 H 600 V 0 H 0 Z"
+                    id                  = "path108089"
+           inkscape:connector-curvature = "0" /></clipPath></defs><sodipodi:namedview
+                    pagecolor           = "#ffffff"
+                    bordercolor         = "#666666"
+                    borderopacity       = "1"
+                    objecttolerance     = "10"
+                    gridtolerance       = "10"
+                    guidetolerance      = "10"
+           inkscape:pageopacity         = "0"
+           inkscape:pageshadow          = "2"
+           inkscape:window-width        = "797"
+           inkscape:window-height       = "480"
+                    id                  = "namedview108077"
+                    showgrid            = "false"
+           inkscape:zoom                = "0.295"
+           inkscape:cx                  = "400"
+           inkscape:cy                  = "400"
+           inkscape:window-x            = "-8"
+           inkscape:window-y            = "-8"
+           inkscape:window-maximized    = "1"
+           inkscape:current-layer       = "g108083" /><g
+                    id                  = "g108083"
+           inkscape:groupmode           = "layer"
+           inkscape:label               = "tractor-color-outline-publicdomainvectors.org"
+                    transform           = "matrix(1.3333333,0,0,-1.3333333,0,800)"><g
+                    id                  = "g108085"><g
+                    id                  = "g108087"
+                    clip-path           = "url(#clipPath108091)"><path
+                    d                   = "m 174.657,526.368 v -15.062 -15.052 h 16.173 16.172 l -0.252,-1.757 c -0.061,-0.426 -0.423,-4.111 -0.981,-9.935 l 8.644,41.986 z"
+                    style               = "fill:#b52c24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108093"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 270.841,496.199 6.768,-0.014 9.179,30.683 c -8.362,-0.032 -17.234,-0.069 -26.648,-0.113 l -6.279,-0.028 z"
+                    style               = "fill:#a08aab;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108095"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 371.021,495.982 3.105,-1.256 c 0.015,-0.007 0.03,-0.014 0.045,-0.02 l -2.9,32.215 c -8.417,0.049 -18.418,0.073 -30.202,0.071 l 21.34,-30.991 z"
+                    style               = "fill:#314ea9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108097"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 447.162,491.278 c -3.74,9.876 -9.801,19.306 -15.74,24.274 -6.074,5.08 -12.838,8.233 -22.01,10.262 -0.755,0.168 -2.147,0.316 -4.278,0.446 l 33.891,-56.117 z"
+                    style               = "fill:#305ab1;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108099"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 388.301,475.279 50.724,-5.136 -33.891,56.117 c -5.591,0.341 -16.271,0.558 -33.863,0.661 l 2.9,-32.215 c 6.748,-2.748 11.908,-9.87 14.13,-19.427"
+                    style               = "fill:#3669bb;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108101"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 303.904,496.128 58.505,-0.127 -21.34,30.991 c -15.046,-0.002 -33.002,-0.044 -54.281,-0.124 l -9.179,-30.683 z"
+                    style               = "fill:#579bcc;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108103"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 452.464,469.803 c -1.66,9.443 -2.667,13.51 -4.025,17.804 -0.385,1.226 -0.815,2.451 -1.277,3.671 l -8.137,-21.135 z"
+                    style               = "fill:#3063b8;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108105"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 236.787,495.168 v 1.105 l 34.054,-0.074 -16.98,30.528 -39.448,-0.179 -8.644,-41.986 c -0.38,-3.964 -0.85,-8.92 -1.378,-14.516 l 30.848,7.939 c 0.945,10.175 1.548,16.843 1.548,17.183"
+                    style               = "fill:#ac9072;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108107"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 463.23,401.428 -2.31,14.981 -17.358,-12.152 z"
+                    style               = "fill:#3573c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108109"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 443.562,404.257 17.358,12.152 -1.509,9.792 c -3.371,21.871 -5.432,34.978 -6.947,43.602 l -13.439,0.34 z"
+                    style               = "fill:#377eca;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108111"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 235.239,477.985 -30.848,-7.939 c -0.034,-0.354 -0.067,-0.71 -0.101,-1.069 l 29.032,-11.476 c 0.719,7.632 1.374,14.637 1.917,20.484"
+                    style               = "fill:#9dcb7d;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108113"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 257.811,415.512 c -0.84,0.436 -2.499,0.795 -3.692,0.795 -4.178,0 -7.997,-5.202 -6.658,-9.055 0.147,-0.42 0.768,-1.46 1.656,-2.812 l 13.19,5.919 c -2.428,3.073 -4.015,4.905 -4.496,5.153"
+                    style               = "fill:#baca56;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108115"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 234.388,397.831 c -3.403,2.171 -5.96,3.923 -6.055,4.171 -0.117,0.302 1.737,21.138 4.12,46.301 0.297,3.14 0.588,6.217 0.869,9.198 l -29.032,11.476 c -0.664,-7.03 -1.413,-15.004 -2.186,-23.255 l -1.547,-63.072 z"
+                    style               = "fill:#baca56;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108117"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 394.88,407.543 48.682,-3.286 -4.537,65.886 -45.329,-47.597 c 0.367,-4.593 0.76,-9.584 1.184,-15.003"
+                    style               = "fill:#3f98da;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108119"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 393.696,422.546 45.329,47.597 -50.724,5.136 c 0.096,-0.417 0.19,-0.837 0.276,-1.264 1.209,-6.032 2.502,-18.75 5.119,-51.469"
+                    style               = "fill:#3e8cd2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108121"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 202.104,445.722 c -2.153,-23.003 -4.485,-48.146 -5.642,-60.906 l 4.095,-2.166 z"
+                    style               = "fill:#ce5e20;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108123"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 237.9,305.028 83.492,30.409 -120.835,47.213 z"
+                    style               = "fill:#cae548;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108125"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 467.188,357 c 2.704,-1.057 6.103,-2.594 9.706,-4.362 l 19.569,16.162 c -7.73,4.445 -16.289,8.553 -25.242,12.075 l -5.133,2.019 -2.858,18.534 -19.668,2.829 z"
+                    style               = "fill:#3c8ad1;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108127"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 314.551,373.661 6.841,-38.224 30.807,38.194 h -12.291 c -9.084,0 -17.692,0.011 -25.357,0.03"
+                    style               = "fill:#81d5d3;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108129"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 263.61,373.631 h -8.37 l -1.189,1.916 c -0.651,1.058 -1.097,1.99 -0.99,2.073 1.703,1.324 9.938,6.812 10.219,6.812 0.213,0 1.882,-2.052 3.707,-4.565 1.825,-2.514 3.692,-4.94 4.153,-5.401 0.753,-0.753 0.01,-0.835 -7.53,-0.835 m 18.555,0.286 h -0.005 c 0,0.16 0.393,0.893 0.878,1.63 0.612,0.942 0.806,2.107 0.631,3.907 -0.224,2.349 -1.272,3.955 -12.291,18.92 -3.643,4.943 -6.743,9.036 -9.071,11.985 l -13.19,-5.919 c 0.957,-1.454 2.223,-3.267 3.546,-5.058 2.557,-3.454 4.644,-6.472 4.639,-6.7 -0.015,-0.228 -2.057,-1.811 -4.552,-3.519 l -4.531,-3.11 -1.592,2.567 c -1.35,2.174 -2.864,3.358 -9.836,7.696 -0.832,0.517 -1.638,1.027 -2.403,1.515 l -33.831,-15.181 120.835,-47.213 -6.841,38.224 c -19.139,0.047 -32.386,0.145 -32.386,0.256"
+                    style               = "fill:#a2da66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108131"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 93.547,352.183 c -1.991,-1.747 -3.607,-3.726 -5.028,-6.022 -1.388,-2.251 -5.149,-11.339 -5.149,-12.455 0,-0.335 5.003,-0.598 13.281,-0.694 l 13.286,-0.165 1.3,-1.514 c 1.505,-1.751 1.669,-4.09 0.568,-8.209 -1.8,-6.74 -7.079,-14.869 -12.651,-19.478 -4.779,-3.959 -9.713,-6.27 -17.943,-8.405 -3.717,-0.961 -6.808,-1.78 -6.871,-1.814 -0.027,-0.016 -0.102,-0.257 -0.216,-0.687 l 80.553,2.418 z"
+                    style               = "fill:#dc2a24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108133"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 394.88,407.543 c 0.141,-1.804 0.283,-3.65 0.433,-5.551 0.092,-1.195 0.184,-2.378 0.275,-3.542 l 56.866,-37.578 c 3.748,-0.697 7.497,-1.597 11.474,-2.734 0.9,-0.258 2.009,-0.647 3.26,-1.138 l -23.626,47.257 z"
+                    style               = "fill:#419ddc;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108135"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 460.133,342.643 c -4.789,1.444 -9.74,2.617 -14.843,3.504 -5.551,0.966 -26.406,0.971 -32.408,0.005 -18.176,-2.915 -35.17,-10.272 -49.521,-21.006 l -6.759,-33.189 z"
+                    style               = "fill:#4cbaed;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108137"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 397.427,375.655 0.228,-2.024 h -24.42 l -5.381,-26.429 c 4.398,2.419 9.066,4.616 14.142,6.685 15.779,6.425 28.832,8.938 46.417,8.938 9.188,0 16.61,-0.574 24.041,-1.953 l -56.866,37.578 c 0.925,-11.862 1.724,-21.78 1.839,-22.795"
+                    style               = "fill:#4cbaed;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108139"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 151.771,368.296 c -10.893,-1.844 -20.772,-3.553 -25.19,-4.384 -17.663,-3.325 -27.044,-6.475 -33.034,-11.729 l 61.13,-57.025 z"
+                    style               = "fill:#da2f24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108141"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 200.557,382.65 -4.095,2.166 c -0.462,-5.097 -0.736,-8.22 -0.736,-8.438 0,-0.815 -0.345,-1.126 -1.247,-1.126 -0.983,0 -23.432,-3.69 -42.708,-6.956 l 2.906,-73.138 z"
+                    style               = "fill:#db561e;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108143"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 352.199,373.631 -30.807,-38.194 12.791,-15.795 c 2.244,2.54 4.651,5.065 7.262,7.625 8.505,8.341 16.822,14.665 26.409,19.935 l 5.381,26.429 z"
+                    style               = "fill:#77d3e8;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108145"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 363.361,325.146 c -7.025,-5.256 -13.416,-11.322 -19.001,-18.071 l 12.242,-15.118 z"
+                    style               = "fill:#77d3e8;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108147"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 487.916,346.832 21.872,-1.883 0.591,0.592 7.93,7.938 -4.232,3.421 c -5.093,4.11 -11.055,8.126 -17.614,11.9 l -19.569,-16.162 c 3.646,-1.79 7.493,-3.812 11.022,-5.806"
+                    style               = "fill:#3772c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108149"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 200.557,382.65 -45.88,-87.492 83.223,9.87 z"
+                    style               = "fill:#e17c18;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108151"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "M 298.985,264.75 321.392,335.437 237.9,305.028 Z"
+                    style               = "fill:#cde766;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108153"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 393.34,265.36 c 6.579,8.281 15.984,14.37 26.37,16.528 11.77,2.446 24.552,0.121 33.926,-6.162 1.974,-1.324 3.797,-2.713 5.478,-4.176 l 10.976,67.593 c -3.234,1.302 -6.553,2.472 -9.957,3.5 L 356.602,291.957 Z"
+                    style               = "fill:#53c6f3;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108155"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 495.705,342.106 6.745,-4.508 7.338,7.351 -21.872,1.883 c 2.913,-1.645 5.607,-3.27 7.789,-4.726"
+                    style               = "fill:#3668bb;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108157"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 486.067,331.179 44.699,-52.603 c -4.531,11.044 -10.949,21.497 -19.183,31.044 -7.37,8.546 -15.933,15.761 -25.516,21.559"
+                    style               = "fill:#3668bb;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108159"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "M 470.09,339.143 459.114,271.55 c 6.806,-5.92 11.278,-13.059 13.848,-22.007 1.515,-5.269 1.705,-17.013 0.462,-22.88 l 65.366,9.626 c 0.196,14.598 -2.523,28.879 -8.024,42.287 l -44.699,52.603 c -5.048,3.053 -10.382,5.711 -15.977,7.964"
+                    style               = "fill:#3c7ec9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108161"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 356.602,291.957 28.713,-42.123 c 1.589,5.654 4.37,10.928 8.025,15.526 z"
+                    style               = "fill:#94dacb;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108163"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 154.677,295.158 67.486,-34.143 15.737,44.013 z"
+                    style               = "fill:#ec8115;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108165"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 298.985,264.75 8.203,3.874 c 1.929,7.555 4.692,14.913 8.419,22.658 5.294,11.011 10.995,19.779 18.576,28.36 l -12.791,15.795 z"
+                    style               = "fill:#b3e2a9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108167"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 344.36,307.075 c -5.113,-6.179 -9.552,-12.929 -13.181,-20.16 -1.479,-2.94 -2.805,-5.885 -3.992,-8.849 l 29.415,13.891 z"
+                    style               = "fill:#b3e2a9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108169"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 66.082,255.55 c 0,-0.46 1.251,0.253 3.109,1.766 8.695,7.092 19.17,12.511 30.373,15.754 l -27.993,8.632 C 69.169,270.901 66.082,256.417 66.082,255.55"
+                    style               = "fill:#e93421;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108171"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 142.253,258.5 c -24.097,7.787 -50.653,1.393 -68.408,-16.468 -0.446,-0.449 -0.882,-0.901 -1.312,-1.357 l 85.237,10.387 c -4.497,2.735 -11.588,6.164 -15.517,7.438"
+                    style               = "fill:#e93421;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108173"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 74.124,292.74 c -0.428,-1.617 -1.413,-5.912 -2.553,-11.038 l 27.993,-8.632 c 1.965,0.571 3.953,1.074 5.957,1.505 6.56,1.418 25.285,1.443 31.87,0.034 9.516,-2.026 18.369,-5.545 26.31,-10.362 l -9.024,30.911 z"
+                    style               = "fill:#e93621;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108175"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 154.677,295.158 9.024,-30.911 c 4.922,-2.986 9.493,-6.472 13.654,-10.41 l 44.808,7.178 z"
+                    style               = "fill:#ed6c18;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108177"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 222.163,261.015 76.822,3.735 -61.085,40.278 z"
+                    style               = "fill:#e6e131;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108179"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 128.525,167.226 9.079,-6.24 4.794,14.768 c -3.669,-4.123 -8.515,-7.095 -13.873,-8.528"
+                    style               = "fill:#ec551b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108181"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 93.638,193.964 c 0,8.487 2.713,14.917 8.661,20.524 6.139,5.794 11.365,7.6 21.011,7.27 5.444,-0.184 6.041,-0.321 10.073,-2.31 7.487,-3.687 13.562,-11.097 15.304,-18.673 0.259,-1.125 0.425,-2.556 0.501,-4.1 L 165.1,245.7 c -1.783,1.508 -3.656,2.935 -5.621,4.27 -0.509,0.345 -1.085,0.712 -1.709,1.092 L 72.533,240.675 C 65.62,233.359 60.576,225.043 57.518,216.021 l 36.28,-24.931 c -0.102,0.949 -0.16,1.907 -0.16,2.874"
+                    style               = "fill:#ec551b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108183"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 327.187,278.066 c -4.704,-11.743 -7.159,-23.778 -7.602,-37.049 -0.577,-17.439 2.19,-31.69 9.313,-47.832 l 27.704,98.772 z"
+                    style               = "fill:#cae879;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108185"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 304.055,249.287 c 0.532,6.796 1.551,13.134 3.133,19.337 l -8.203,-3.874 z"
+                    style               = "fill:#cae879;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108187"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 384.966,226.532 c -1.377,5.567 -1.241,17.498 0.263,23.006 0.026,0.099 0.059,0.196 0.086,0.296 l -28.713,42.123 -27.704,-98.772 c 0.168,-0.382 0.336,-0.763 0.508,-1.148 1.044,-2.309 2.165,-4.574 3.36,-6.793 l 61.095,23.694 c -4.188,5.125 -7.298,11.124 -8.895,17.594"
+                    style               = "fill:#bee7b1;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108189"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 65.529,156.525 72.075,4.461 -9.079,6.24 c -4.445,-1.19 -9.244,-1.32 -14.018,-0.163 -11.091,2.683 -19.484,12.618 -20.709,24.027 l -36.28,24.931 c -2.302,-6.792 -3.482,-13.985 -3.48,-21.455 0,-11.375 2.076,-20.313 7.06,-30.502 1.246,-2.549 2.741,-5.078 4.431,-7.539"
+                    style               = "fill:#eb501c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108191"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 473.182,225.653 c -1.401,-5.046 -3.666,-9.757 -6.608,-13.964 l 50.969,-39.081 c 8.198,11.14 14.293,23.767 17.66,36.961 2.282,8.939 3.468,17.887 3.587,26.72 l -65.366,-9.626 c -0.075,-0.358 -0.155,-0.696 -0.242,-1.01"
+                    style               = "fill:#69b6c7;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108193"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 209.31,189.432 h 48.686 54.976 l -0.751,1.485 h 0.008 c -0.283,0.56 -0.691,1.594 -1.166,2.909 l -88.9,67.189 z"
+                    style               = "fill:#f2d40a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108195"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 222.163,261.015 88.9,-67.189 c -1.503,4.175 -3.666,11.208 -4.558,15.055 -2.059,8.859 -2.898,17.06 -2.898,28.355 0,4.205 0.147,8.202 0.448,12.051 l -5.07,15.463 z"
+                    style http://127.0.0.1:8000/farmer_dashboard1/1/              = "fill:#e9ed1d;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108197"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 172.074,238.866 16.871,-46.335 c 0.377,16.916 -5.609,33.555 -16.871,46.335"
+                    style               = "fill:#f19811;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108199"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 177.355,253.837 c 6.891,-6.522 12.655,-14.285 17.022,-23.082 6.065,-12.219 8.462,-21.696 8.574,-33.895 l 0.068,-7.428 h 6.291 l 12.853,71.583 z"
+                    style               = "fill:#f19811;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108201"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 148.469,187.098 c -1.131,-4.34 -3.255,-8.18 -6.071,-11.344 l -4.794,-14.768 40.057,-4.252 c 2.485,3.702 4.607,7.664 6.312,11.848 3.175,7.788 4.794,15.899 4.972,23.949 l -16.871,46.335 c -2.137,2.424 -4.464,4.711 -6.974,6.834 l -15.912,-49.025 c 0.164,-3.315 -0.087,-7.145 -0.719,-9.577"
+                    style               = "fill:#f08c13;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108203"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 406.707,197.985 c -4.9,2.84 -9.267,6.577 -12.846,10.953 l -61.095,-23.694 c 0.652,-1.214 1.327,-2.414 2.024,-3.598 l 68.491,-7.323 z"
+                    style               = "fill:#bde370;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108205"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 454.938,200.079 6.228,-39.892 45.243,-0.494 c 4.037,4.013 7.765,8.336 11.134,12.915 l -50.969,39.081 c -3.168,-4.531 -7.123,-8.471 -11.636,-11.61"
+                    style               = "fill:#83d297;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108207"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 419.495,192.984 c -4.517,0.989 -8.825,2.704 -12.788,5.001 l -3.426,-23.662 17.958,18.356 c -0.635,0.089 -1.222,0.19 -1.744,0.305"
+                    style               = "fill:#94d78e;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108209"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 421.239,192.679 -17.958,-18.356 57.885,-14.136 -6.228,39.892 c -4.926,-3.428 -10.513,-5.903 -16.47,-7.134 -4.266,-0.883 -12.256,-0.966 -17.229,-0.266"
+                    style               = "fill:#93d67f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108211"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 368.094,146.264 c 8.135,-5.479 17.043,-9.899 26.518,-13.076 2.084,-0.696 4.522,-1.379 7.171,-2.018 l 1.498,43.153 z"
+                    style               = "fill:#e4d526;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108213"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 334.79,181.646 c 8.334,-14.175 19.747,-26.251 33.304,-35.382 l 35.187,28.059 z"
+                    style               = "fill:#e8ed25;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108215"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 65.529,156.525 c 6.529,-9.51 16.033,-18.034 25.935,-22.982 12.402,-6.191 29.289,-8.424 42.85,-5.658 2.408,0.49 4.77,1.105 7.084,1.838 l -3.794,31.263 z"
+                    style               = "fill:#ec5c1a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108217"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 403.281,174.323 -1.498,-43.153 c 3.992,-0.964 8.472,-1.83 12.987,-2.489 5.548,-0.812 18.547,-1.003 25.324,-0.421 l 21.072,31.927 z"
+                    style               = "fill:#b8e057;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108219"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 475.799,138.107 c 6.669,3.188 13.095,7.133 19.46,11.92 3.933,2.957 7.657,6.196 11.15,9.666 l -45.243,0.494 z"
+                    style               = "fill:#a9be8b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108221"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 460.109,132.136 c 5.424,1.572 10.627,3.552 15.69,5.971 l -14.633,22.08 z"
+                    style               = "fill:#b5b654;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108223"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 440.094,128.26 c 0.514,0.044 0.995,0.092 1.43,0.143 6.528,0.791 12.687,2.023 18.585,3.733 l 1.057,28.051 z"
+                    style               = "fill:#c5c33d;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108225"
+           inkscape:connector-curvature = "0" /><path
+                    d                   = "m 141.398,129.723 c 14.923,4.717 27.733,14.314 36.263,27.011 l -40.057,4.252 z"
+                    style               = "fill:#ef7b15;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                    id                  = "path108227"
+           inkscape:connector-curvature = "0" /></g></g></g></svg>
+                      </span>
+                      <span class = "app-brand-text demo menu-text fw-bolder ms-2">Revin</span>
+                    </a>
+        
+                    <a href  = "javascript:void(0);" class = "layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                    <i class = "bx bx-chevron-left bx-sm align-middle"></i>
+                    </a>
+                  </div>
+        
+                  <div class = "menu-inner-shadow"></div>
+        
+                  <ul   class = "menu-inner py-1">
+                    <li   class = "menu-header small text-uppercase">
+                    <span class = "menu-header-text">Farmer</span>
+                      </li>
+                      <!-- Dashboard -->
+                      <li  class     = "menu-item active">
+                      <a   href      = "index.html" class = "menu-link">
+                      <i   class     = "menu-icon tf-icons bx bx-home-circle"></i>
+                      <div data-i18n = "Analytics">Dashboard</div>
+                        </a>
+                      </li>
+
+
+
+                      <!--  <li class = "menu-header small text-uppercase">
+                      <span class     = "menu-header-text">Farmer</span>
+                      </li> -->
+                      <li  class     = "menu-item">
+                      <a   href      = "index.html" class = "menu-link">
+                      <i   class     = "menu-icon tf-icons bx bx-building"></i>
+                      <div data-i18n = "Basic">All Farms</div>
+                        </a>
+                      </li>
+                      <li  class     = "menu-item">
+                      <a   href      = "#" class = "menu-link">
+                      <i   class     = "menu-icon tf-icons bx bxs-report"></i>
+                      <div data-i18n = "Basic">Reports</div>
+                        </a>
+                      </li>
+                      <!-- Components -->
+                      <!-- <li class = "menu-header small text-uppercase"><span class = "menu-header-text">General</span></li> -->
+                      <!-- Cards -->
+                      <li  class     = "menu-item">
+                      <a   href      = "https://krishijagran.com/agriculture-world/list-of-agricultural-subsidies-given-to-farmers-by-government-of-india/" class = "menu-link" target = "_blank">
+                      <i   class     = "menu-icon tf-icons bx bx-money"></i>
+                      <div data-i18n = "Basic">Govt. Subsidies</div>
+                        </a>
+                      </li>
+                  </ul>
+          <div  class = "border-right">
+              <div  class = "d-flex flex-column align-items-center text-center p-3 py-5">
+              <img id="farmers_photo_side" class = "rounded-circle mt-5" width = "130px" height = "130px" src = "{% static 'farmer_dashboard/assets/img/people/farmer.jpg'%}">
+              <span id="farmers_name" class = "font-weight-bold">Farmer </span>
+              <span class = "text-black-50">Intelligent Farmer</span>
+                  <span> </span>
+                </div>
+          </div>
+        </aside>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class = "layout-page flex-grow-1 container-fluid"" style="width:100%; overflow:hidden;" >
+
+
+          <!-- Navbar -->
+          <nav
+            class = "layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme "
+            id    = "layout-navbar"
+            style="width:100%;
+            margin-left:24px;
+            max-width: 98%;
+            
+            "
+          >
+            <div class = "layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a   class = "nav-item nav-link px-0 me-xl-4" href = "javascript:void(0)">
+            <i   class = "bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class = "navbar-nav-right d-flex align-items-center" id = "navbar-collapse">
+              <!-- Search -->
+              <div    class          = "navbar-nav align-items-center">
+              <div    class          = "nav-item d-flex align-items-center">
+              <select id             = "select_crop" style = "width: 200px;">
+              <option selected value = "tomato">Tomato</option>
+              <option value          = "chilli">Chilli</option>
+              <option value          = "wheat">Wheat</option>
+                  </select>
+                </div>
+              </div>
+              <!-- /Search -->
+              <button type  = "button" class = "btn btn-outline-primary btn-sm" style = "margin-left: 10px; padding-bottom: 20px" data-bs-toggle = "modal" data-bs-target = "#modal_add_crop">
+              <span   class = "tf-icons bx bx-plus-circle"></span>&nbsp; Add Crop
+              </button>
+
+              <ul class = "navbar-nav flex-row align-items-center ms-auto">
+
+            <li   class = "nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+            <a    class = "nav-link dropdown-toggle hide-arrow show" href = "javascript:void(0);" data-bs-toggle = "dropdown" data-bs-auto-close = "outside" aria-expanded = "true">
+            <i    class = "bx bx-bell bx-sm"></i>
+            <span class = "badge bg-danger rounded-pill badge-notifications">5</span>
+            </a>
+            <ul  class = "dropdown-menu dropdown-menu-end py-0 show" data-bs-popper = "static">
+            <li  class = "dropdown-menu-header border-bottom">
+            <div class = "dropdown-header d-flex align-items-center py-3">
+            <h5  class = "text-body mb-0 me-auto">Notification</h5>
+            <a   href  = "javascript:void(0)" class                                 = "dropdown-notifications-all text-body" data-bs-toggle = "tooltip" data-bs-placement = "top" aria-label = "Mark all as read" data-bs-original-title = "Mark all as read"><i class = "bx fs-4 bx-envelope-open"></i></a>
+                </div>
+              </li>
+              <li  class = "dropdown-notifications-list scrollable-container ps">
+              <ul  class = "list-group list-group-flush">
+              <li  class = "list-group-item list-group-item-action dropdown-notifications-item">
+              <div class = "d-flex">
+              <div class = "flex-shrink-0 me-3">
+                      </div>
+                      <div   class = "flex-grow-1">
+                      <h6    class = "mb-1"></h6>
+                      <p     class = "mb-0">Irrigation Requirement</p>
+                      <small class = "text-muted">There is a requirement of irrigation tomorrow</small>
+                      </div>
+                      <div class = "flex-shrink-0 dropdown-notifications-actions">
+                      <a   href  = "javascript:void(0)" class = "dropdown-notifications-read"><span class    = "badge badge-dot"></span></a>
+                      <a   href  = "javascript:void(0)" class = "dropdown-notifications-archive"><span class = "bx bx-x"></span></a>
+                      </div>
+                    </div>
+                  </li>
+                  <li  class = "list-group-item list-group-item-action dropdown-notifications-item">
+                  <div class = "d-flex">
+                  <div class = "flex-shrink-0 me-3">
+                      </div>
+                      <div   class = "flex-grow-1">
+                      <h6    class = "mb-1"></h6>
+                      <p     class = "mb-0">Crop health</p>
+                      <small class = "text-muted">some issue.</small>
+                      </div>
+                      <div class = "flex-shrink-0 dropdown-notifications-actions">
+                      <a   href  = "javascript:void(0)" class = "dropdown-notifications-read"><span class    = "badge badge-dot"></span></a>
+                      <a   href  = "javascript:void(0)" class = "dropdown-notifications-archive"><span class = "bx bx-x"></span></a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              <div    class = "ps__rail-x" style = "left: 0px; bottom: 0px;"><div class = "ps__thumb-x" tabindex = "0" style = "left: 0px; width: 0px;"></div></div><div class = "ps__rail-y" style = "top: 0px; right: 0px;"><div class = "ps__thumb-y" tabindex = "0" style = "top: 0px; height: 0px;"></div></div><div class = "ps__rail-x" style = "left: 0px; bottom: 0px;"><div class = "ps__thumb-x" tabindex = "0" style = "left: 0px; width: 0px;"></div></div><div class = "ps__rail-y" style = "top: 0px; right: 0px;"><div class = "ps__thumb-y" tabindex = "0" style = "top: 0px; height: 0px;"></div></div></li>
+              <li     class = "dropdown-menu-footer border-top p-3">
+              <button class = "btn btn-primary text-uppercase w-100">view all notifications</button>
+              </li>
+            </ul>
+          </li>
+                <!-- User -->
+                <li  class = "nav-item navbar-dropdown dropdown-user dropdown">
+                <a   class = "nav-link dropdown-toggle hide-arrow" href    = "javascript:void(0);" data-bs-toggle = "dropdown">
+                <div class = "avatar avatar-online">
+                <img id="farmers_photo_small" src   = "{% static 'farmer_dashboard/assets/img/people/farmer.jpg'%}" alt class = "w-px-40 h-px-40 rounded-circle" />
+                    </div>
+                  </a>
+                  <ul class = "dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a   class = "dropdown-item" href                          = "#">
+                      <div class = "d-flex">
+                      <div class = "flex-shrink-0 me-3">
+                      <div class = "avatar avatar-online">
+                      <img id="farmers_photo_dropdown" src   = "{% static 'farmer_dashboard/assets/img/people/farmer.jpg'%}" alt class = "w-px-40 h-px-40 rounded-circle"/>
+                            </div>
+                          </div>
+                          <div   class = "flex-grow-1">
+                          <span id="farmers_name_dropdown" class = "fw-semibold d-block"></span>
+                          <small class = "text-muted">Farmer</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class = "dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a    class = "dropdown-item" href = "#">
+                      <i    class = "bx bx-user me-2"></i>
+                      <span class = "align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class = "dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a    class = "dropdown-item" href = "auth-login-basic.html">
+                      <i    class = "bx bx-power-off me-2"></i>
+                      <span class = "align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+          <!-- / Navbar -->
+
+             <!-- Content wrapper -->
+             <div class="content-wrapper flex-grow-1 container-fluid">
+              <!-- Content -->
+              <div class="container-xxl flex-grow-1 container-p-y container-fluid" style="margin:0px">
+                <div class="row">
+                  <!-- first column starts-->
+                  <div class="col-lg-4 order-0 mb-3 col-md-6 col-sm-12 " style="padding-right:0px">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                          <div class="col-lg-12 mx-auto mt-2">
+                              <div class=" card mb-1 " style="overflow-y: hidden; overflow-x: auto; white-space: nowrap; padding: 10px; position: relative; height: 24.208907741251327vh; ">
+                                <div class="timeline-container" style="flex-grow: 1; overflow-x: auto; white-space: nowrap; padding: 10px;">
+                                  <div class="timeline" >
+                                       <!-- Phases -->
+                                      <div class="phase" data-phase="seed_phase">
+                                        <div class="circle" id="img_seed_phase"></div>
+                                        <span class="label">Seed</span>
+                                    </div>
+                                    <div class="phase" data-phase="seedling_phase">
+                                        <div class="circle" id="img_seedling_phase"></div>
+                                        <span class="label">Seedling</span>
+                                    </div>
+                                    <div class="phase" data-phase="vegetative_phase">
+                                        <div class="circle" id="img_vegetative_phase"></div>
+                                        <span class="label">Vegetative</span>
+                                    </div>
+                                    <div class="phase" data-phase="flowering_phase">
+                                        <div class="circle" id="img_flowering_phase"></div>
+                                        <span class="label">Flowering</span>
+                                    </div>
+                                    <div class="phase" data-phase="ripening_phase">
+                                        <div class="circle" id="img_ripening_phase"></div>
+                                        <span class="label">Ripening</span>
+                                    </div>
+                                  
+                                  </div>
+                                </div>
+                                  <div class="card-footer d-flex justify-content-between" style="display: flex;
+                                  justify-content: space-between;
+                                  width: 100%; /* Footer spans the entire width of the card */
+                                  padding: 10px; /* Adjust padding as needed */
+                                  box-sizing: border-box;
+                                  ">
+                                    <div id="total_growth_value" style="color: green;">Total Growth: %</div>
+                                    <!-- <div id="yield_predicted_value">Yield Predicted: %</div> -->
+                                    <div id="cumulative_gdd_value" style="text-align: right;color: green;">Cumulative GDD: </div> <!-- Placeholder for GDD value -->
+                                </div>
+                                
+                              </div>
+                          </div>
+                      </div>
+                      
+                        <!-- Temperature Card (Row 2) -->
+                        <div class="row">
+                            <div class="col-lg-12 mx-auto mt-2">
+                                <div class="card mb-3 pb-0 weather-card" style=" height:28.81336161187699vh; padding-top:0px; overflow-y: auto;"> 
+                                  <!-- background: linear-gradient(to bottom right, #ffffff 30%, rgba(106, 90, 205, 0.2)); -->
+                                    <!-- <video autoplay loop muted style="width: 100%; height: 100%; object-fit: fill;">
+                                        <source src="{%static 'farmer_dashboard/assets/videos/weather_forecast.mp4'%}" type="video/mp4" />
+                                    </video> -->
+                                    <!-- <div class="weather-card"  style="overflow-y: auto;"> -->
+                                      <div class="weather-header" style="display: flex; align-items: center;
+                                      justify-content: space-between;">
+                                        <div>
+                                          <div class="current-date"></div>
+                                          <div class="location"></div>
+                                        </div>
+                                          <div class="condition-icon" style="display: flex; align-items: center; justify-content: center;">
+                                            <!-- Icon dynamically loaded based on weather conditions -->
+                                            
+                                            <img class="today-weather-icon" >
+                                            <span class="today-weather-text"></span>
+                                        </div>
+                                      </div>
+                                      <div class="weather-tabs">
+                                          <button class="tab-button active" data-target="today">Today</button>
+                                          <button class="tab-button" data-target="tomorrow">Tomorrow</button>
+                                          <button class="tab-button" data-target="next-week">Next Week</button>
+                                      </div>
+
+
+                                      <div class="weather-forecast active" id="today-forecast" >
+                                      <div class="weather-details" >
+                                          
+                                          <div class="weather-parameters">
+                                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Temperature">
+                                                  <i class="bi bi-thermometer-half"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Temperature</div>
+                                            </div>
+                                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Precipitation">
+                                                  <i class="bi bi-cloud-drizzle-fill"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Precipitation</div>
+                                              </div>
+                                              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Humidity">
+                                                  <i class="bi bi-moisture"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Humidity</div>
+                                              </div>
+                                              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Wind Speed">
+                                                  <i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Wind Speed</div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                     
+                                      
+                                          <!-- Today's weather details, already provided in your previous code -->
+                                      </div>
+                                      
+                              
+                                      <div class="weather-forecast" id="tomorrow-forecast">
+                                        <div class="weather-details" >
+                                          
+                                          <div class="weather-parameters">
+                                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Temperature">
+                                                  <i class="bi bi-thermometer-half"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Temperature</div>
+                                            </div>
+                                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Precipitation">
+                                                  <i class="bi bi-cloud-drizzle-fill"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Precipitation</div>
+                                              </div>
+                                              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Humidity">
+                                                  <i class="bi bi-moisture"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Humidity</div>
+                                              </div>
+                                              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                              <div class="parameter" title="Wind Speed">
+                                                  <i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div>
+                                              <div>Windspeed</div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                         
+                                          
+                                      </div>
+                                  
+                                      <div class="weather-forecast" id="next-week-forecast">
+                                          <!-- Static content for "Next Week" -->
+                                          <!-- You can add a list or a table here with daily forecasts for the next week -->
+                                          <table class="next-week-table">
+                                      <thead>
+                                          <tr>
+                                              <!-- Dynamically populate these dates with JavaScript -->
+                                              <th class="date-3">Date</th>
+                                              <th class="date-4">Date + 1</th>
+                                              <th class="date-5">Date + 2</th>
+                                              <th class="date-6">Date + 3</th>
+                                              <th class="date-7">Date + 3</th>
+                                              
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr>
+                                              <!-- Weather Icons -->
+                                              
+                                              <td class="date-3-icon"><img alt="Weather Icon"></td>
+                                              <td class="date-4-icon"><img alt="Weather Icon"></td>
+                                              <td class="date-5-icon"><img alt="Weather Icon"></td>
+                                              <td class="date-6-icon"><img  alt="Weather Icon"></td>
+                                              <td class="date-7-icon"><img alt="Weather Icon"></td>
+                                              <!-- Repeat for each day -->
+                                          </tr>
+                                          <tr>
+                                              <!-- Temperature Values -->
+                                              
+                                              <td class="date-3-temperature"><i class="bi bi-thermometer-half"></i>
+                                                <span></span></td>
+                                              <td class="date-4-temperature"><i class="bi bi-thermometer-half"></i>
+                                                <span></span></td>
+                                              <td class="date-5-temperature"><i class="bi bi-thermometer-half"></i>
+                                                <span></span></td>
+                                              <td class="date-6-temperature"><i class="bi bi-thermometer-half"></i>
+                                                <span></span></td>
+                                              <td class="date-7-temperature"><i class="bi bi-thermometer-half"></i>
+                                                <span></span></td>
+                                              <!-- Repeat for each day -->
+                                          </tr>
+                                          <tr>
+                                              <!-- Humidity Values -->
+                                              
+                                              <td class="date-3-humidity"> <i class="bi bi-moisture"></i>
+                                                <span></span></td>
+                                              <td class="date-4-humidity"> <i class="bi bi-moisture"></i>
+                                                  <span></span></td>
+                                              <td class="date-5-humidity"> <i class="bi bi-moisture"></i>
+                                                  <span></span></td>
+                                              <td class="date-6-humidity"> <i class="bi bi-moisture"></i>
+                                                  <span></span></td>
+                                              <td class="date-7-humidity"> <i class="bi bi-moisture"></i>
+                                                  <span></span></td>
+                                              
+                                          </tr>
+                                          <tr>
+                                              
+                                              <td class="date-3-windspeed"><i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div></td>
+                                              <td class="date-4-windspeed"><i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div></td>
+                                              <td class="date-5-windspeed"><i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div></td>
+                                              <td class="date-6-windspeed"><i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div></td>
+                                              <td class="date-7-windspeed"><i class="bi bi-wind"></i>
+                                                  <span></span>
+                                              </div></td>
+                                              
+                                          </tr>
+                                          <tr>
+                                            <!-- Precipitation Values -->
+                                            
+                                            <td class="date-3-precipitation"> <i class="bi bi-cloud-drizzle-fill"></i>
+                                              <span></span></td>
+                                            <td class="date-4-precipitation"> <i class="bi bi-cloud-drizzle-fill"></i>
+                                              <span></span></td>
+                                            <td class="date-5-precipitation"> <i class="bi bi-cloud-drizzle-fill"></i>
+                                              <span></span></td>
+                                            <td class="date-6-precipitation"> <i class="bi bi-cloud-drizzle-fill"></i>
+                                              <span></span></td>
+                                            <td class="date-7-precipitation"><i class="bi bi-cloud-drizzle-fill"></i>
+                                              <span></span></td>
+                                            
+                                        </tr>
+                                      </tbody>
+                                  </table>
+                                      </div>
+                                  <!-- </div> -->
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- Third Card -->
+                        <div class="row">
+                            <div class="col-lg-12 mx-auto mt-2">
+                                <div class="card" style="height: 31.81336161187699vh;">
+                                    <div class="card-body p-0 m-0" style="height: auto;">
+                                        <h5 class="card-header m-0 me-2 pb-1 pt-1">
+                                            <span class="fw-semibold d-block mb-1">Area Covered: <span id="area_covered"></span></span>
+                                        </h5>
+                                        <div id="crop-map" style="height: calc(100% - 46px); padding: 10px;"></div>
+                                        <!-- Adjusted the height of the map to be 100% - header height -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- first column ends -->
+                <!-- second column starts -->
+
+                  <div class="col-12 col-lg-4 mb-0" style="padding-right: 0px;">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-lg-12 mx-auto mt-2">
+                                <div class="card mb-0" style="height: 87vh; overflow-y: hidden ;"> <!-- Adjust height as needed -->
+                                  
+                                  <!-- ... other code ... -->
+
+                                  <div class="card-header" style=" background: linear-gradient(to bottom, rgb(142,169,212) 0%, rgba(142,169,212, 0) 100%);"
+                                  >
+                                    <div class="row g-2"> <!-- Use grid with gutters -->
+                                      <div class="col">
+                                        <!-- Use Bootstrap button classes for styling -->
+                                        <button type="button" class="plant-btn btn  w-100 parameter-btn" onclick="toggleBox('plant-box')" style="font-weight: bolder;">
+                                          <i class="bi bi-tree" style="left: 0px;"></i><span >Plant</span></button>
+                                      </div>
+                                      <div class="col">
+                                        <button type="button" class="soil-btn btn  w-100 parameter-btn" onclick="toggleBox('soil-box')" style="font-weight: bolder;">
+                                          <i class="bi bi-flower1 " style="left: 0px;"></i><span>Soil</span></button>
+                                      </div>
+                                      <div class="col">
+                                        <button type="button" class="environment-btn btn  w-100 parameter-btn" onclick="toggleBox('environment-box')" style="font-weight: bolder;">
+                                          <i class="bi bi-cloud" style="left: 0px;"></i><span>Environment</span></button>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <!-- ... other code ... -->
+
+
+                                  <div class="card-body p-0 card-image-container">
+
+                                  </div>
+                                   <!-- environment Box -->
+                                  <div class="arrow-box arrow-box-top" id="environment-box" style="display:none;">
+                                    <!-- <span class="close-icon" onclick="toggleBox('environment-box')">&times;</span> -->
+                                    <!-- <div class="arrow"></div> -->
+                                    <div class="content-box">
+                                      <ul class="parameter-panel-container">
+                                        <div class="parameter-panel " style="background-color:rgb(196, 216, 240);" >
+                                          <div class="parameter-item" id="temperature-item"  data-toggle="modal" data-target="#tempModal" data-parameter="temperature">
+                                           <i class="bi bi-thermometer-half" style="font-size: 1rem; color: #FF8C00;"></i>
+                                            <span id="temperature"></span>
+                                          </div>
+                                        </div>
+                                        <div class="parameter-panel" style="background-color:rgb(196, 216, 240);">
+                                          <div class="parameter-item" id="wind_speed-item"  data-toggle="modal" data-target="#tempModal" data-parameter="wind_speed" >
+                                            <i class="bi bi-wind" style="font-size: 1rem ; color: #1E90FF;"></i>
+                                            <span id="wind_speed"></span>
+                                          </div>
+                                        </div>
+                                        <div class="parameter-panel" style="background-color:rgb(196, 216, 240);">
+                                          <div class="parameter-item" id="wind_direction-item"  data-toggle="modal" data-target="#tempModal" data-parameter="wind_direction">
+                                            <i class="bi bi-compass" style="font-size: 1rem; color: #4682B4;"></i>
+                                            <span id="wind_direction"></span>
+                                          </div>
+                                        </div>
+                                        <div class="parameter-panel" style="background-color:rgb(196, 216, 240);">
+                                          <div class="parameter-item" id="irradiance-item"  data-toggle="modal" data-target="#tempModal" data-parameter="irradiance">
+                                            <i class="bi bi-sun" style="font-size: 1rem;color: #FFD700;"></i>
+                                            <span id="irradiance"></span>
+                                          </div>
+                                        </div>
+                                        <div class="parameter-panel" style="background-color:rgb(196, 216, 240);">
+                                          <div class="parameter-item"id="rainfall-item"  data-toggle="modal" data-target="#tempModal" data-parameter="rainfall">
+                                            <i class="bi bi-cloud-rain" style="font-size: 1rem;"></i>
+                                            <span id="rainfall"></span>
+                                          </div>
+                                        </div>
+                                        <div class="parameter-panel" style="background-color:rgb(196, 216, 240);">
+                                          <div class="parameter-item" id="humidity-item"  data-toggle="modal" data-target="#tempModal" data-parameter="humidity">
+                                            <i class="bi bi-moisture" style="font-size: 1rem; color: #00CED1;"></i>
+                                            <span id="humidity"></span>
+                                          </div>
+                                        </div>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                  <!-- Soil Box -->
+                                  <div class="arrow-box arrow-box-bottom" id="soil-box">
+                                    <!-- <span class="close-icon" onclick="toggleBox('soil-box')">&times;</span> -->
+                                    <!-- <div class="arrow" style="left: auto; right: 50%; transform: translateX(50%) rotate(180deg);"></div> -->
+                                    <div class="content-box" style="flex-grow: 1;">
+                                      <ul class="parameter-panel-container">
+                                      <div class="parameter-panel" style="background-color: rgb(245,205,179);">
+                                        <div class="parameter-item" id="sm1-item"  data-toggle="modal" data-target="#tempModal" data-parameter="sm1">
+                                          <i class="bi bi-droplet-half" style="font-size: 1rem; color: #3CB371;"></i>
+                                          <span id="soil_moisture1"></span>
+                                        </div>
+                                      </div>
+                                      <div class="parameter-panel"style="background-color: rgb(245,205,179);">
+                                        <div class="parameter-item"id="sm2-item"  data-toggle="modal" data-target="#tempModal" data-parameter="sm2">
+                                          <i class="bi bi-droplet-half" style="font-size: 1rem; color: #2E8B57;"></i>
+                                          <span id="soil_moisture2"></span>
+                                        </div>
+                                      </div>
+                                      <div class="parameter-panel"style="background-color: rgb(245,205,179);">
+                                        <div class="parameter-item"id="soil_temperature-item"  data-toggle="modal" data-target="#tempModal" data-parameter="soil_temperature">
+                                          <i class="bi bi-thermometer-sun" style="font-size: 1rem;"></i>
+                                          <span id="soil_temperature"></span>
+                                        </div>
+                                      </div>
+                                    </ul>
+                                    </div>
+                                  </div>
+                                  <!-- Plant Box -->
+                                  <div class="arrow-box arrow-box-middle" id="plant-box">
+                                    <!-- <span class="close-icon" onclick="toggleBox('plant-box')">&times;</span> -->
+                                    <!-- <div class="arrow" style="left: 10%; bottom: auto; top: 50%; transform: translateY(-50%) rotate(270deg);"></div> -->
+                                    <div class="content-box">
+                                      <ul class="parameter-panel-container">
+                                        <div class="parameter-panel"style="background-color: rgb(202,241,202);">
+                                          <div class="parameter-item"id="leaf_wetness-item"  data-toggle="modal" data-target="#tempModal" data-parameter="leaf_wetness" >
+                                            <i class="bi bi-droplet" style="font-size: 1rem; color: #20B2AA;"></i>
+                                            <span id="leaf_wetness"></span>
+                                          </div>
+                                        </div>
+                                        <div class="parameter-panel"style="background-color: rgb(202,241,202);">
+                                          <div class="parameter-item" id="gdd-item"  data-toggle="modal" data-target="#tempModal" data-parameter="gdd">
+                                            <i class="bi bi-calendar2-week" style="font-size: 1rem;"></i>
+                                            <span id="gdd"></span>
+                                          </div>
+                                        </div>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                  <div id="last_updated" style=" position: absolute;
+                                  bottom: 0;
+                                  right: 9px;
+                                  /* background-color: green; */
+                                  color: lightgreen;
+                                  padding: 5px;
+                                  font-weight: bold;
+                                  border-radius: 0 0 0 8px; ">
+                                      Last Updated
+                                  </div>  
+
+                                  <!-- <div id="details-box" style="display: none;">
+                                    <span id="close-btn" style="cursor: pointer; position: absolute; top: 0; right: 10px;">×</span>
+                                    <p>abfiulajhgbfiujknb</p>
+                                  </div>
+                                   -->
+                                  
+                                  
+                                </div>
+                                   </div>
+                      </div>
+                                    
+                      </div>
+                  </div>
+                    
+                  
+                  <!-- third column starts -->
+                  <div class="col-12 col-lg-4 mb-0">
+                    <div class="container-fluid p-0">
+                      <!-- alert notification tile -->
+                      <div class="row">
+                        <div class="col-lg-12 mx-auto mt-2">
+                          <div id="alertCarousel" class="card mb-1 carousel slide" data-ride="carousel" style="height: 25vh;">
+                            <!-- Carousel items will be inserted here by JavaScript -->
+                            <div class="carousel-inner"></div>
+                            
+                            <!-- Carousel controls -->
+                            <a class="carousel-control-prev" href="#alertCarousel" role="button" data-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true">
+                                  <i class="fas fa-chevron-left" ></i>
+                              </span>
+                              <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="carousel-control-next" href="#alertCarousel" role="button" data-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true">
+                                  <i class="fas fa-chevron-right"></i>
+                              </span>
+                              <span class="sr-only">Next</span>
+                          </a>
+                          
+                          </div>
+                        </div>
+                      </div>
+                      
+                      
+
+                      <div class="row">
+                        <div class="col-lg-12 mx-auto mt-1">
+                          <div class="card mb-1 task-card" style="height: 30vh;">
+                            <div class="card-header">Tasks</div>
+                            <div class="card-body" id="current-tasks-container">
+                              <div class="tab-content">
+                                <div class="tab-pane fade show active" id="upcoming-tasks">
+                                  <!-- Upcoming tasks will be appended here by JavaScript -->
+                                </div>
+                                <div class="tab-pane fade" id="completed-tasks">
+                                  <!-- Completed tasks will be appended here by JavaScript -->
+                                </div>
+                            </div>
+                            </div>
+                            <div class="card-footer">
+                              <ul class="nav nav-tabs card-footer-tabs" id="tasks-tabs">
+                                <li class="nav-item">
+                                  <a class="nav-link active" data-toggle="tab" href="#upcoming-tasks">Upcoming Tasks</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" data-toggle="tab" href="#completed-tasks">Completed Tasks</a>
+                                </li>
+                              </ul>
+                            </div>
+                          <!-- </div> -->
+                        </div>
+                      </div>
+                      
+
+
+
+
+
+                      <div class="row">
+                          <div class="col-lg-12 mx-auto mt-1">
+                              <div class="card mb-0" style="height: 30vh;"> <!-- Adjust height as needed -->
+                                 <img src="{% static 'farmer_dashboard/assets/videos/crop_happiness1.gif' %}" alt="Crop Happiness GIF" style="width: 100%; height: 100%; object-fit: fill;">
+                              </div>
+                          </div>
+                      </div>
+                    </div>               
+                  </div>
+                  <!-- third column ends -->
+                </div>
+                <!-- row ends here-->
+              </div>
+              <!-- / Content -->
+            </div>
+            
+
+              <!-- Content wrapper -->
+
+       
+
+          
+        <!-- / Layout container -->
+      </div>
+
+      <!-- MODAL -->
+      
+      <!-- Modal -->
+<div class="modal fade" id="tempModal" tabindex="-1" role="dialog" aria-labelledby="tempModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tempModalLabel" style="background-color: rgb(196,216,240);color: black;border-radius: 5px;">Paremter Description</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="unitDisplay" style="position: absolute; top: 0px; right: 10px;"></div>
+        <!-- Buttons and Datepicker in a single row -->
+        <div class="row">
+          <!-- Buttons Column -->
+          <div class="col-6">
+            <div class="btn-group" role="group" aria-label="Date selection">
+              <button type="button" class="btn btn-secondary" id="daywise-btn">Daywise</button>
+              <button type="button" class="btn btn-secondary" id="realtime-btn">Realtime</button>
+            </div>
+          </div>
+          <!-- Datepicker Column -->
+          <div class="col-6">
+            <div id="datepicker-container" style="width:85% ;">
+              <!-- Placeholder for Datepicker Input (It will be added dynamically with jQuery) -->
+            </div>
+          </div>
+        </div>
+        
+        <div id="chartContainer"></div>
+        <div class="parameter-stats">
+          <div id="minValue"></div>
+          <div id="maxValue"></div>
+          <div id="avgValue"></div>
+        </div>
+        <hr>
+        <div id="gaugeDiv" style="width:100%; max-width:300px; height:200px;  margin: auto;"></div>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Apply</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+      <!-- Modal -->
+      <div  class = "modal fade" id   = "modalCenter" tabindex = "-1" aria-hidden = "true">
+      <div  class = "modal-dialog modal-dialog-centered" role = "document">
+      <div  class = "modal-content">
+      <div  class = "modal-header">
+      <h5   class = "modal-title">
+      <span class = "badge bg-label-primary p-2"><i class     = "bx bx-wind text-primary"></i></span> Wind Speed
+              </h5>
+              <button
+                type   = "button"
+                class  = "btn-close"
+                data-bs-dismiss = "modal"
+                aria-label   = "Close"
+              ></button>
+            </div>
+            <div class = "modal-body">
+            <div class = "row g-0">
+            <div class = "col-md-8">
+            <div class = "card-body">
+            <p   class = "card-text">
+                        High wind speed can damage crops by eroding soil, drying out plants, and causing physical harm such as breaking stems and uprooting young plants. It can also disrupt pollination and affect overall crop health.
+                      </p>
+                      <p     class = "card-text">
+                      <small class = "text-muted">
+                      <a     href  = "https://agritech.tnau.ac.in/agriculture/agri_agrometeorology_wind.html#:~:text=Wind%20increases%20the%20turbulence%20in,roots%20and%20shoots%20in%20rice." target = "_blank">Know more</a>
+                        </small>
+                      </p>
+                    </div>
+                  </div>
+                  <div class = "col-md-4">
+                  <img class = "card-img card-img-right" src = "{% static 'farmer_dashboard/assets/img/wind_speed_sensor.jpeg'%}" alt = "Card image">
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Overlay -->
+      <div class = "layout-overlay layout-menu-toggle"></div>
+    </div>
+
+    <!-- Modal -->
+      <div  class = "modal fade" id                           = "modal_add_crop" tabindex = "-1" aria-hidden = "true">
+      <div  class = "modal-dialog modal-dialog-centered" role = "document">
+      <div  class = "modal-content">
+      <div  class = "modal-header">
+      <h5   class = "modal-title">
+      <span class = "badge bg-label-primary p-2"><i class     = "bx bx-wind text-primary"></i></span> Add New Crop
+              </h5>
+              <button
+                type            = "button"
+                class           = "btn-close"
+                data-bs-dismiss = "modal"
+                aria-label      = "Close"
+              ></button>
+            </div>
+            <div class = "modal-body">
+            <div class = "row g-0">
+            <div class = "col-md-8">
+            <div class = "card-body">
+            <p   class = "card-text">
+                        
+                      </p>
+                      <p class = "card-text">
+                      </p>
+                    </div>
+                  </div>
+                  <div class = "col-md-4">
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Overlay -->
+      <div class = "layout-overlay layout-menu-toggle"></div>
+    </div>
+    </div>
+    </div>
+   
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <!-- build: js assets/vendor/js/core.js -->
+    <script src = "{% static 'farmer_dashboard/assets/vendor/libs/jquery/jquery.js'%}"></script>
+    <script src = "{% static 'farmer_dashboard/assets/vendor/libs/popper/popper.js'%}"></script>
+    <script src = "{% static 'farmer_dashboard/assets/vendor/js/bootstrap.js'%}"></script>
+    <script src = "{% static 'farmer_dashboard/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js'%}"></script>
+
+    <script src = "{% static 'farmer_dashboard/assets/vendor/js/menu.js'%}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src = "{% static 'farmer_dashboard/assets/vendor/libs/apex-charts/apexcharts.js'%}"></script>
+
+    <!-- Main JS -->
+    <script src = "{% static 'farmer_dashboard/assets/js/main.js'%}"></script>
+
+    <!-- Page JS -->
+    <script src = "{% static 'farmer_dashboard/assets/js/dashboards-analytics.js'%}"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src = "https://buttons.github.io/buttons.js"></script>
+    <!-- <script src             = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA8NF6A0H4_DlJT-D7IiKIeUy5Do1ZNjyM&callback=initMap&&libraries=geometry" async defer></script> -->
+     <script src             = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA8NF6A0H4_DlJT-D7IiKIeUy5Do1ZNjyM&libraries=geometry" async defer></script>
+    <script src             = "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <!-- for details-box -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <script src="{% static 'vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}" type="text/javascript"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Bootstrap JS (make sure the version matches your Bootstrap CSS) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Add this script to your index.html file -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js" integrity="sha512-bztGAvCE/3+a1Oh0gUro7BHukf6v7zpzrAb3ReWAVrt+bVNNphcl2tDTKCBr5zk7iEDmQ2Bv401fX3jeVXGIcA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.js" integrity="sha512-4WpSQe8XU6Djt8IPJMGD9Xx9KuYsVCEeitZfMhPi8xdYlVA5hzRitm0Nt1g2AZFS136s29Nq4E4NVvouVAVrBw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    
+
+
+    <script type="text/javascript">
+      var highlightBox = $('#highlightBox');
+      var mainImage = $('#wms_image');
+      var map, marker, areaPolygon;
+    
+      function calculateCentroid(coords) {
+        let lat = 0.0, lng = 0.0;
+    
+        coords.forEach(coord => {
+          lat += coord.lat;
+          lng += coord.lng;
+        });
+    
+        lat /= coords.length;
+        lng /= coords.length;
+    
+        return { lat, lng };
+      }
+      
+       // var polygonCoords = [
+        //   {lat: 10.728385, lng: 76.620757},
+        //   {lat: 10.728454, lng: 76.620993},
+        //   {lat: 10.728307, lng: 76.621071},
+        //   {lat: 10.728094, lng: 76.621077},    
+        //   {lat: 10.727927, lng: 76.621134},
+        //   {lat: 10.727836, lng: 76.620885},
+        //   {lat: 10.727951, lng: 76.620837},
+        //   {lat: 10.728385, lng: 76.620757}
+        // ];
+        // 10.728385,  76.620757|
+        // 10.728454,  76.620993|
+        // 10.728307,  76.621071|
+        // 10.728094,  76.621077|    
+        // 10.727927,  76.621134|
+        // 10.727836,  76.620885|
+        // 10.727951,  76.620837|
+        // 10.728385,  76.620757
+        
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('crop-map'), {
+          zoom: 18,
+          mapTypeId: google.maps.MapTypeId.SATELLITE
+        });
+    
+        areaPolygon = new google.maps.Polygon({
+          strokeColor: '#FF6347',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF6347',
+          fillOpacity: 0.4
+        });
+        areaPolygon.setMap(map);
+    
+        fetchMapCardData();
+        fetchGddCardData();
+      }
+    
+      function fetchMapCardData() {
+        var device_id = parseInt("{{ device_id }}", 10);
+        // console.log(typeof device_id)
+        $.ajax({
+          url: `/farmer_dashboard/${device_id}/map_card/`,
+          type: 'GET',
+          dataType: 'json',
+          success: function (response) {
+            if (response.boundary_coordinates) {
+              var polygonCoords = response.boundary_coordinates.split('|').map(function (coordinate) {
+                var [lat, lng] = coordinate.trim().split(',');
+                return { lat: parseFloat(lat), lng: parseFloat(lng) };
+              });
+              areaPolygon.setPaths(polygonCoords);
+    
+              var centroid = calculateCentroid(polygonCoords);
+              map.setCenter(centroid);
+    
+              var icon = {
+                url: response.icon_url,
+                scaledSize: new google.maps.Size(40, 40),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(20, 20)
+              };
+    
+              if (marker) {
+                marker.setPosition(centroid);
+              } else {
+                marker = new google.maps.Marker({
+                  position: centroid,
+                  map: map,
+                  icon: icon,
+                  title: response.crop_name
+                });
+              }
+               // Calculate the area using the geometry library
+              var area = google.maps.geometry.spherical.computeArea(areaPolygon.getPath());
+              var areaInAcres = area / 4046.86; // Convert from square meters to acres
+              $('#area_covered').text(areaInAcres.toFixed(2) + " Acre");
+              // $('#area_covered').text(response.area_covered + " Acre");
+              $('#farmers_name').text(response.farmers_name);
+              $('#farmers_photo_small').attr('src', response.profile_pic_url);
+            }
+          },
+          error: function (error) {
+            console.error('Error fetching boundary coordinates:', error);
+          }
+        });
+      }
+      // marking the devices
+     // Function to add markers to the map
+function addDeviceMarkers(devices) {
+    var bounds = new google.maps.LatLngBounds(); // Create bounds object
+
+    devices.forEach(function(device) {
+        console.log('Adding marker for  device:', device.name); // Debugging line
+        var position = new google.maps.LatLng(device.latitude, device.longitude);
+        var greenCircle = {
+          path: 'M 0, 0 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0', // SVG path for a circle
+            fillColor: '#ABFFA6', // Light green fill
+            fillOpacity: 0.6,
+            scale: 2, // Size of the inner circle
+            strokeColor: '#00FF00', // Bright green stroke
+            strokeWeight: 1,
+            strokeOpacity: 1,
+            // The below properties are for the outer glow effect
+            anchor: new google.maps.Point(0,0),
+            labelOrigin: new google.maps.Point(0, -10)
+        };
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map, // Assuming you have a 'map' variable that holds your Google Map instance
+            title: device.name,
+            icon: greenCircle
+        });
+        marker.addListener('click', function() {
+            // Redirecting to the URL for the clicked device
+            window.location.href = '/farmer_dashboard/' + device.id;
+        });
+
+        // Extend the bounds of the map to include this new marker
+        // bounds.extend(marker.position);
+    });
+
+    // Now fit the map to the newly inclusive bounds
+    // map.fitBounds(bounds);
+
+    
+}
+
+    
+    
+      function fetchGddCardData() {
+        var device_id = parseInt("{{ device_id }}", 10);
+        
+        $.ajax({
+      url: `/farmer_dashboard/${device_id}/gdd_card/`,
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+          // Clear any existing 'active' class
+          // $('.phase').removeClass('active');
+          $('.phase').on('click', function() {
+          // Remove the active-circle class from all circles
+          $('.circle').removeClass('active-circle');
+    
+          // Add the active-circle class to the clicked circle
+          $(this).find('.circle').addClass('active-circle');
+        });
+    
+    
+          // Determine the current growth phase based on GDD
+          var gdd = response.cumulative_gdd;
+          if (response.stages_flags.has_seed_stage && gdd <= response.seed_phase_gdd_limit) {
+            $('[data-phase="seed_phase"]').addClass('active').find('.circle').addClass('active-circle');
+          } 
+          else if ( response.stages_flags.has_seedling_stage && gdd <= response.seedling_phase_gdd_limit) {
+            $('[data-phase="seedling_phase"]').addClass('active').find('.circle').addClass('active-circle');
+          } 
+          else if (response.stages_flags.has_vegetative_stage && gdd <= response.vegetative_phase_gdd_limit) {
+            $('[data-phase="vegetative_phase"]').addClass('active').find('.circle').addClass('active-circle');
+          } 
+          else if (response.stages_flags.has_flowering_stage && gdd <= response.flowering_phase_gdd_limit) {
+            $('[data-phase="flowering_phase"]').addClass('active').find('.circle').addClass('active-circle');
+          }  
+          else if (response.stages_flags.has_ripening_stage && gdd > response.flowering_phase_gdd_limit) {
+            $('[data-phase="seed_phase"]').addClass('active').find('.circle').addClass('active-circle');
+          }
+    
+          // Update the background images of the circles based on AJAX response
+          $('#img_seed_phase').css('background-image', 'url(' + response.seed_phase + ')');
+          $('#img_seedling_phase').css('background-image', 'url(' + response.seedling_phase + ')');
+          $('#img_vegetative_phase').css('background-image', 'url(' + response.vegetative_phase + ')');
+          $('#img_flowering_phase').css('background-image', 'url(' + response.flowering_phase + ')');
+          $('#img_ripening_phase').css('background-image', 'url(' + response.ripening_phase + ')');
+    
+          // Update Total Growth and Yield Predicted values
+          $('#total_growth_value').text("Total Growth: " + response.total_growth_value.toFixed(2) + "%");
+          $('#cumulative_gdd_value').text("GDD: " + response.cumulative_gdd);
+          // $('#yield_predicted_value').text("Yield Predicted: " + response.yield_predicted_value + "%");
+          if (!response.stages_flags.has_seed_stage) {
+          $('[data-phase="seed_phase"]').hide();
+      }
+      if (!response.stages_flags.has_seedling_stage) {
+          $('[data-phase="seedling_phase"]').hide();
+      }
+      if (!response.stages_flags.has_vegetative_stage) {
+          $('[data-phase="vegetative_phase"]').hide();
+      }
+      if (!response.stages_flags.has_flowering_stage) {
+          $('[data-phase="flowering_phase"]').hide();
+      }
+      if (!response.stages_flags.has_ripening_stage) {
+          $('[data-phase="ripening_phase"]').hide();
+      }
+      },
+      error: function(error) {
+          console.error('Error fetching GDD data:', error);
+      }
+    });
+    }
+
+
+    
+    function toggleBox(boxId) {
+      var box = document.getElementById(boxId);
+      var items = box.querySelectorAll('.parameter-item');
+      
+      // Check if the box is already displayed
+      if (box.style.display === 'none' || box.style.display === '') {
+        box.style.display = 'block'; // Show the box
+        for (let i = 0; i < items.length; i++) {
+          // Clear the previous animation if any
+          items[i].style.animation = '';
+          // Add a timeout to create a staggered animation effect
+          setTimeout(function() {
+            items[i].classList.add('animate-in'); // Add the animation class
+          }, i * 100); // Delay each item by 100ms increments
+        }
+      } else {
+        box.style.display = 'none'; // Hide the box
+        items.forEach(function(item) {
+          item.classList.remove('animate-in'); // Remove the animation class
+        });
+      }
+    }
+   
+   
+   
+   
+   //details-box-script
+    var current_device = String(parseInt("{{ device_id }}", 10));
+    function formatted_date(d) {
+        return d.getFullYear()
+          + "-" + ("0" + (d.getMonth()+1)).slice(-2)
+          + "-" + ("0" + d.getDate()).slice(-2);
+      };
+    
+    function plotDataForParameter(parameter, data, timestamps, isDaywise = false) {
+      // Your code to set up the trace for the parameter
+      
+      var trace = {
+        type: "scatter",
+        name: parameter,
+        x: timestamps,
+        y: data,
+        mode: 'lines+markers',
+        connectgaps: true 
+      };
+      
+      var layout = {
+        title: formatParameterName(parameter),
+        xaxis: {
+          title: 'Time',
+          showgrid: true,
+          zeroline: false
+        },
+        yaxis: {
+          title: formatParameterName(parameter),
+          showline: false
+        }
+      };
+      
+      var chartDivId = isDaywise ? `div_daywise_chart_${parameter}` : `div_realtime_chart_${parameter}`;
+      if ($('#' + chartDivId).length === 0) {
+          // console.log(`Skipping plotting for ${parameter} as ${chartDivId} does not exist.`);
+          return; // Skip this parameter and move on to the next one
+        }
+      Plotly.newPlot(chartDivId, [trace], layout);
+    }
+
+function plotAllParameters(data, timestamps, isDaywise = false) {
+  // Loop through each parameter in the data and call plotDataForParameter
+  // console.log(data);
+  // console.log(timestamps);
+  Object.keys(data).forEach(function(parameter) {
+    // console.log(parameter);
+    plotDataForParameter(parameter, data[parameter], timestamps, isDaywise);
+  });
+}
+
+// Modify the existing plotData function to call plotAllParameters
+function plotData(date) {
+  date = formatted_date(date);
+  var start_time = date + "T00:00:00Z";
+  var end_time = date + "T23:59:59Z";
+  var url = `/api/data/?device_id=${current_device}&timestamp__gte=${start_time}&timestamp__lte=${end_time}`;
+  
+  $.get(url, function(response) {
+    // console.log(response);
+    var timestamps = [];
+    var data = {};
+
+    response.forEach(function(datapoint) {
+      timestamps.push(datapoint.timestamp);
+      Object.keys(datapoint).forEach(function(key) {
+        if(key !== "timestamp" && key !== "id" && key !== "device") {
+          if (!data.hasOwnProperty(key)) {
+            data[key] = [];
+          }
+          data[key].push(datapoint[key]);
+        }
+      });
+    });
+    // console.log("Data for plotting: ", data); 
+    plotAllParameters(data, timestamps);
+  });
+}
+
+// Use this function for daywise data
+function getRangeData(startDate, endDate) {
+  var startDateFormatted = formatted_date(startDate);
+  var endDateFormatted = formatted_date(endDate);
+  var url = `/api/daysummary/?device_id=${current_device}&date__gte=${startDateFormatted}&date__lte=${endDateFormatted}`;
+  
+
+  $.get(url, function(response) {
+    var dataByParam = {};
+    var dates = [];
+    // console.log(response);
+    // Organize data by parameter and collect unique dates
+    response.forEach(function(datapoint) {
+      var param = datapoint.param;
+      var date = datapoint.date;
+      var value = datapoint.value;
+
+      if (!dataByParam.hasOwnProperty(param)) {
+        dataByParam[param] = {};
+      }
+      if (!dataByParam[param].hasOwnProperty(date)) {
+        dataByParam[param][date] = value;
+      }
+
+      if (dates.indexOf(date) === -1) {
+        dates.push(date);
+      }
+    });
+
+    // Sort dates to ensure chronological order
+    dates.sort();
+
+    // Convert organized data into arrays for plotting
+    var data = {};
+    var timestamps = dates;
+    Object.keys(dataByParam).forEach(function(param) {
+      data[param] = dates.map(function(date) {
+        return dataByParam[param][date] || null; // Use null for missing values
+      });
+    });
+
+    // Now, you can plot each parameter with its corresponding data and timestamps
+    plotAllParameters(data, timestamps, true);
+  });
+}
+
+
+      var currentMode = 'realtime'; 
+      var lastSelectedParameter = ''; 
+      function formatParameterName(parameterName) {
+        return parameterName
+          // Split the string into words by underscore
+          .split('_')
+          // Capitalize the first letter of each word and join them back with a space
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      }
+    // console.log(typeof current_device);
+    function updateChartContainer(parameterName,currentMode = 'realtime') {
+    // Update the modal title
+        $('#tempModalLabel').text(formatParameterName(parameterName) );
+        // console.log("function current mode: ",currentMode)
+        // Determine the correct chart div ID
+        var chartDivId = `div_${currentMode}_chart_${parameterName}`;
+        
+        // Clear existing chart and append the new chart div
+        $('#chartContainer').empty();
+        var chartDiv = $('<div>').attr('id', chartDivId);
+          // console.log("**")
+        // console.log(chartDiv);
+        $('#chartContainer').append(chartDiv);
+    }
+    
+     var deviceId = parseInt("{{ device_id }}", 10);
+     
+    function fetchParameterStats(deviceId, startDate, endDate, parameterNameToBeDisplayed) {
+      startDate = formatted_date(startDate);
+      endDate = formatted_date(endDate);
+        var url = `/api/data_report/?device_id=${deviceId}&date_gte=${startDate}&date_lte=${endDate}`;
+
+        $.get(url, function(response) {
+          // Assuming 'temperature' is the parameter you're interested in and it's always present
+          // console.log(response);
+          var paramStats = response.param_wise_data.find(param => param.param === parameterNameToBeDisplayed);
+          if (paramStats) {
+            // console.log("paramStats")
+            // console.log(paramStats)
+            var min = paramStats.min_val;
+            var max = paramStats.max_val;
+            var avg = (min + max) / 2;
+            $('#minValue').text(`Min ${parameterNameToBeDisplayed}: ${paramStats ? paramStats.min_val : '-'}`);
+            $('#maxValue').text(`Max ${parameterNameToBeDisplayed}: ${paramStats ? paramStats.max_val : '-'}`);
+            $('#avgValue').text(`Avg ${parameterNameToBeDisplayed}: ${avg.toFixed(2)}`);
+            $('#unitDisplay').html(`<i>*All the values are in ${paramStats ? paramStats.unit : '-'}</i>`);
+            $('.parameter-stats > div').css('display', 'block');
+            // console.log(min)
+            // console.log(max)
+            // console.log(avg)
+          }
+        });
+        var deviceId = parseInt("{{ device_id }}", 10);
+        $.ajax({
+          url: `/farmer_dashboard/${deviceId}/wms_card/`,
+          type: 'GET',
+          dataType: 'json',
+          success: function(response) {
+            
+            // Extract the current value of the selected parameter
+            var currentValue = response[parameterNameToBeDisplayed];
+            var url = `/farmer_dashboard/param_config/?param=${parameterNameToBeDisplayed}`;
+            $.ajax({
+              url: url,
+              type: 'GET',
+              dataType: 'json',
+              success: function(response) {
+                var paramName = response.param;
+                var paramUnit = response.unit;
+                var paramMinLimit = response.min_limit;
+                var paramMaxLimit = response.max_limit;
+                // console.log(paramName, paramUnit, paramMaxLimit , paramMinLimit);
+                // console.log(paramName, currentValue, paramMinLimit, paramMaxLimit, paramUnit)
+                plotGauge(paramName, currentValue, paramMinLimit, paramMaxLimit, paramUnit);
+              },
+              error: function(error) {
+                console.error('Error fetching parameter config:', error);
+                callback(null);
+              }
+            });  
+
+          },
+          error: function(error) {
+            console.error('Error fetching current parameter value:', error);
+          }
+        });
+      }
+
+
+      // Function to update the modal with parameter statistics
+      function updateParameterModal(parameterName, responseData) {
+        // Find the data for the selected parameter
+        var paramData = responseData.param_wise_data.find(p => p.param === parameterName);
+
+        // Calculate the average value if min and max are available
+        var avgVal = paramData ? (paramData.min_val + paramData.max_val) / 2 : '-';
+
+        // Update the modal content
+        $('#minValue').text(`Min: ${paramData ? paramData.min_val : '-'}`);
+        $('#maxValue').text(`Max: ${paramData ? paramData.max_val : '-'}`);
+        $('#avgValue').text(`Avg: ${avgVal.toFixed(2)}`);
+        $('#unitDisplay').text(`<i>All the values are in ${paramData ? paramData.unit : '-'}</i>`);
+
+        // Change the ID of the chart container to match the parameter
+        $('#chartContainer').attr('id', `div_chart_${parameterName}`);
+        
+        // Trigger any other actions needed to update the chart or modal
+      }
+
+    
+    function plotGauge(paramName, currentValue, lowerLimit, upperLimit, unit) {
+        var currentDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+       
+        var gaugeTitle = `${paramName} <br> ${currentDate}`;
+
+        // Adjust the axis range to go from null to upperLimit * 0.5
+        var axisRangeEnd = upperLimit * 1.5;
+        
+        var data = [{
+          type: "indicator",
+          mode: "gauge+number",
+          value: currentValue,
+          number: {
+            suffix: " " + unit,
+            font: {
+              size: 40,
+              color: "black"
+            }
+          },
+          title: {
+            text: formatParameterName(gaugeTitle),
+            font: {
+              family: 'Arial, sans-serif',
+              size: 12,
+              color: 'black'
+            },
+            x: 0.1, // Centered horizontally
+            y: 0.9, // Closer to the top of the gauge area
+            xref: 'container',
+            yref: 'container',
+            xanchor: 'center',
+            yanchor: 'top',
+            pad: {t: 5, r: 10, b: 5, l: 10}, // Example padding
+            standoff: 5 // Example standoff
+          },
+          gauge: {
+            axis: { range: [null, axisRangeEnd], tickvals: [0, lowerLimit, upperLimit, axisRangeEnd] },
+            bar: { color: "darkblue" },
+            bgcolor: "white",
+            borderwidth: 2,
+            bordercolor: "gray",
+            steps: [
+              { range: [0, lowerLimit], color: "lightgreen" },
+              { range: [lowerLimit, upperLimit], color: "yellow" },
+              { range: [upperLimit, axisRangeEnd], color: "red" }
+            ],
+            threshold: {
+              line: { color: "red", width: 4 },
+              thickness: 0.75,
+              value: currentValue
+            }
+          }
+        }];
+
+        var layout = {
+          width: 300,
+          height: 250,
+          margin: { t: 0, r: 25, l: 25, b: 0 },
+          paper_bgcolor: "white",
+          font: { color: "darkblue", family: "Arial" },
+          
+        };
+
+        Plotly.newPlot('gaugeDiv', data, layout);
+      }
+
+
+
+
+    $(document).ready(function() {
+
+      // tasks tile script
+      // function updateCurrentTasks() {
+      //   var deviceId = parseInt("{{ device_id }}", 10); // Ensure you get the correct device ID here
+        
+      //   $.ajax({
+      //     url: `/farmer_dashboard/${deviceId}/tasks_card/`,
+      //     type: 'GET',
+      //     dataType: 'json',
+      //     success: function(tasks) {
+      //       var tasksContainer = $('#current-tasks-container');
+      //       tasksContainer.empty(); // Clear any existing tasks
+            
+      //       tasks.forEach(function(task, index) {
+      //         // Calculate the days left
+             
+      //         var daysLeftText = task.days_left === 1 ? task.days_left + ' day left' : task.days_left + ' days left';
+
+      //         // Alternating background color
+      //         var backgroundColor = index % 2 === 0 ? '#e9ecef' : '#f8f9fa';
+
+      //         // Create the task element with dynamic color and text
+      //         var taskElement = `
+      //           <div class="task d-flex justify-content-between align-items-center" style="background-color: ${backgroundColor};">
+      //             <span class="badge days-left">${daysLeftText}</span>
+      //             <span class="task-description">${task.task_description}</span>
+      //           </div>
+      //         `;
+      //         tasksContainer.append(taskElement);
+      //       });
+      //     },
+      //     error: function(error) {
+      //       console.error('Error fetching tasks:', error);
+      //     }
+      //   });
+      // }
+      // updateCurrentTasks();
+      function updateTasks() {
+        var deviceId = parseInt("{{ device_id }}", 10); // Ensure you get the correct device ID here
+
+        $.ajax({
+          url: `/farmer_dashboard/${deviceId}/tasks_card/`,
+          type: 'GET',
+          dataType: 'json',
+          success: function(response) {
+            var upcomingTasksContainer = $('#upcoming-tasks');
+            var completedTasksContainer = $('#completed-tasks');
+            
+            upcomingTasksContainer.empty(); // Clear any existing tasks
+            completedTasksContainer.empty(); // Clear any existing tasks
+            
+            response.upcoming_tasks.forEach(function(task, index) {
+              // Calculate the days left
+              var daysLeftText = task.days_left === 1 ? task.days_left + ' day left' : task.days_left + ' days left';
+              var taskElement = `
+                <div class="task d-flex justify-content-between align-items-center">
+                  <span class="badge days-left">${daysLeftText}</span>
+                  <span class="task-description">${task.task_description}</span>
+                </div>
+              `;
+              upcomingTasksContainer.append(taskElement);
+            });
+            
+            response.completed_tasks.forEach(function(task, index) {
+              // Format the completed date
+              var taskElement = `
+                <div class="task d-flex justify-content-between align-items-center">
+                  <span class="task-description">${task.task_description}</span>
+                  <span class="badge days-left">${task.completed_on}</span>
+                </div>
+              `;
+              completedTasksContainer.append(taskElement);
+            });
+          },
+          error: function(error) {
+            console.error('Error fetching tasks:', error);
+          }
+        });
+      }
+      updateTasks();
+
+
+
+
+
+
+
+
+      plotGauge(20, 300, 1000);
+
+      //details box script
+      var currentMode = 'realtime'; 
+      var lastSelectedParameter = ''; 
+
+      $('.parameter-item').click(function() {
+      var parameterName = $(this).data('parameter'); // Get the parameter name
+      lastSelectedParameter = parameterName; // Update the last selected parameter
+     
+      updateChartContainer(parameterName);
+      Plotly.purge('gaugeDiv');
+
+    });
+
+    
+    // When 'Daywise' button is clicked
+    $('#daywise-btn').click(function() {
+      $(this).addClass('active');
+      $('#realtime-btn').removeClass('active');
+        // currentMode = 'daywise';
+        $('#minValue').empty()
+        $('#maxValue').empty()
+        $('#avgValue').empty()
+        $('#unitDisplay').empty()
+        $('.parameter-stats > div').css('display', 'none');
+        if (lastSelectedParameter !== '') {
+          // console.log(lastSelectedParameter )
+          // console.log(currentMode)
+          updateChartContainer(lastSelectedParameter,"daywise"); 
+        }
+        
+        // Dynamically add the date range picker input
+        $('#datepicker-container').html('<input type="text" class="form-control" id="daywise-datepicker" placeholder ="Select date range">');
+        // Initialize the date range picker
+        $('#daywise-datepicker').daterangepicker({
+          opens: 'left',  
+          autoUpdateInput: false, // prevent auto-filling of the input
+          locale: {
+            cancelLabel: 'Clear', // label for clear button
+            format: 'MM/DD/YYYY'
+          }
+        });
+
+        // Update the input with the selected date range
+        $('#daywise-datepicker').on('apply.daterangepicker', function(ev, picker) { 
+          $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+          var startDate = picker.startDate.toDate();
+          var endDate = picker.endDate.toDate();
+          // Log the selected date range to the console
+          // console.log( startDate, endDate);
+          getRangeData(startDate, endDate);
+          fetchParameterStats(current_device, startDate, endDate,lastSelectedParameter);
+
+        });
+
+        // Handle clear action
+        $('#daywise-datepicker').on('cancel.daterangepicker', function(ev, picker) {
+          $(this).val('');
+        });
+      });
+
+      // When 'Realtime' button is clicked
+      $('#realtime-btn').click(function() {
+        $(this).addClass('active');
+        $('#daywise-btn').removeClass('active');
+        $('#minValue').empty()
+        $('#maxValue').empty()
+        $('#avgValue').empty()
+        $('#unitDisplay').empty()
+        $('.parameter-stats > div').css('display', 'none');
+        if (lastSelectedParameter !== '') {
+          // console.log(lastSelectedParameter )
+          // console.log(currentMode)
+          updateChartContainer(lastSelectedParameter,"realtime"); 
+        }
+        // Dynamically add the single date picker input
+        $('#datepicker-container').html('<input type="text" class="form-control" id="realtime-datepicker" placeholder = "select date">');
+        // Initialize the single date picker
+        $('#realtime-datepicker').daterangepicker({
+          singleDatePicker: true,
+          showDropdowns: true,
+          minYear: 1901,
+          autoUpdateInput: false,
+          maxYear: parseInt(moment().format('YYYY'),10)
+        });
+        $('#realtime-datepicker').on('apply.daterangepicker', function(ev, picker) {
+          $(this).val(picker.startDate.format('MM/DD/YYYY') );
+          var selectedDate = picker.startDate.toDate();
+          // ev.date === picker.startDate.toDate()
+          // console.log("Selected date:", selectedDate);
+          plotData(selectedDate);
+          fetchParameterStats(current_device, selectedDate, selectedDate,lastSelectedParameter );
+
+        });
+
+        // Handle clear action
+        $('#realtime-datepicker').on('cancel.daterangepicker', function(ev, picker) {
+          $(this).val('');
+        });
+      });
+
+      // when modal is closed
+      $('#tempModal').on('hidden.bs.modal', function () {
+        // Clear the min, max, and avg values
+        $('#minValue').text('');
+        $('#maxValue').text('');
+        $('#avgValue').text('');
+        $('#unitDisplay').text('');
+        $('#daywise-datepicker').val('');
+        $('#realtime-datepicker').val('');
+         Plotly.purge('gaugeDiv');
+        $('.parameter-stats > div').css('display', 'none');
+        
+        // Optionally, you could also clear the chart or reset its contents
+        $('#chartContainer').empty(); // or whatever you need to reset the chart
+      });
+
+
+      
+
+
+      
+
+
+
+
+      // updateWeatherForecast();
+            initMap()
+          // adding markers for devices
+          var deviceId = parseInt("{{ device_id }}", 10);
+          $.ajax({
+              url: `/farmer_dashboard/${deviceId}/farmer_devices/`, // Update the URL as needed
+              type: 'GET',
+              dataType: 'json',
+              success: function(response) {
+                  // Assuming the response is an array of devices
+                  addDeviceMarkers(response);
+                  console.log(response)
+                  // console.log("********************************")
+              },
+              error: function(error) {
+                  console.error('Error fetching devices:', error);
+                  // console.log("********************************")
+              }
+          });
+          
+          // wms tile logic
+          $("#parameters-btn").click(function() {
+          var $panel = $("#parameters-panel");
+          if ($panel.is(":visible")) {
+              // If the panel is visible, we want to slide it up and fade it out.
+              $panel.animate({
+                  top: "-100%",
+                  opacity: 0
+              }, 500, function() {
+                  // After the animation completes, we hide the panel.
+                  $panel.hide();
+              });
+          } else {
+              // If the panel is not visible, we want to make it visible and animate it.
+              $panel.css({
+                  top: "-100%", // Start above the view
+                  opacity: 0 // Start as transparent
+              }).show().animate({
+                  top: "50px", // Move down into view
+                  opacity: 1 // Fade in
+              }, 500);
+          }
+      });
+
+      // handles the state and colors of parameter-btns
+      $('.plant-btn, .soil-btn, .environment-btn').on('click', function() {
+          // Determine the specific active class for the clicked button
+          var activeClass;
+          if ($(this).hasClass('plant-btn')) {
+              activeClass = 'plant-btn-active';
+          } else if ($(this).hasClass('soil-btn')) {
+              activeClass = 'soil-btn-active';
+          } else if ($(this).hasClass('environment-btn')) {
+              activeClass = 'environment-btn-active';
+          }
+
+          // Toggle the active class for this button only
+          $(this).toggleClass(activeClass);
+      });
+
+
+            $('#select_crop').select2({
+              placeholder: 'Select an option',
+            });
+    
+            $("#windspeed_panel").on('mouseenter', function() {
+                                                              // Set the position and dimensions of the highlight box on mouse enter
+                updateHighlightBox(180, 10, 120, 80, "red");  // Adjust these values as needed
+                highlightBox.show();
+            });
+            
+            $("#windspeed_panel").on('mouseleave', function() {
+                  // Hide the highlight box on mouse leave
+                highlightBox.hide();
+            });
+    
+            $("#temperature_panel").on('mouseenter', function() {
+                                                               // Set the position and dimensions of the highlight box on mouse enter
+                updateHighlightBox(225, 95, 30, 30, "green");  // Adjust these values as needed
+                highlightBox.show();
+            });
+            
+            $("#temperature_panel").on('mouseleave', function() {
+                  // Hide the highlight box on mouse leave
+                highlightBox.hide();
+            });
+    
+            $("#irradiance_panel").on('mouseenter', function() {
+                                                              // Set the position and dimensions of the highlight box on mouse enter
+                updateHighlightBox(280, 170, 40, 40, "red");  // Adjust these values as needed
+                highlightBox.show();
+            });
+            
+            $("#irradiance_panel").on('mouseleave', function() {
+                  // Hide the highlight box on mouse leave
+                highlightBox.hide();
+            });
+    
+            $("#humidity_panel").on('mouseenter', function() {
+                                                                // Set the position and dimensions of the highlight box on mouse enter
+                updateHighlightBox(130, 110, 50, 60, "green");  // Adjust these values as needed
+                highlightBox.show();
+            });
+            
+            $("#humidity_panel").on('mouseleave', function() {
+                  // Hide the highlight box on mouse leave
+                highlightBox.hide();
+            });
+    
+            $("#rainfall_panel").on('mouseenter', function() {
+                                                                // Set the position and dimensions of the highlight box on mouse enter
+                updateHighlightBox(130, 110, 50, 60, "green");  // Adjust these values as needed
+                highlightBox.show();
+            });
+            
+            $("#rainfall_panel").on('mouseleave', function() {
+    
+                  // Hide the highlight box on mouse leave
+                highlightBox.hide();
+            });
+            
+    
+    
+    
+    
+    
+            // AJAX request for wms tile
+            var wmsBackgroundUpdated = false; // to keep track whether the wms background is updated once or not
+            function updateWeatherParameters() {
+              
+              var device_id = parseInt("{{ device_id }}", 10);
+              var url = `/farmer_dashboard/${device_id}/wms_card`;
+              // console.log(device_id)
+              $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                  // This block executes if the AJAX request is successful
+                 
+                  // console.log(response)
+                  $('#temperature').text("Temperature: "+ response.temperature);  
+                  $('#wind_speed').text("WindSpeed: "+response.windspeed);
+                  $('#rainfall').text("Rainfall: "+response.rainfall);
+                  $('#irradiance').text("Irradiance: "+response.irradiance); 
+                  $('#humidity').text("Humidity: "+response.humidity); 
+                  $('#soil_moisture1').text("SoilMoisture1: "+response.sm1); 
+                  $('#soil_moisture2').text("SoilMoisture2: "+response.sm2); 
+                  $('#leaf_wetness').text("LeafWetness: "+response.leaf_wetness); 
+                  $('#wind_direction').text("WindDirection: "+response.wind_direction); 
+                  $('#last_updated').text("Last Updated: "+ response.last_updated);
+                  $('#gdd').text("GDD: "+ response.daily_gdd);
+                  // $('#wms-background_image').attr('src', response.wms_background_url);
+                  $('.card-image-container').css('background-image', 'url(' + response.wms_background_url + ')');
+                  // Schedule the next AJAX request after 10 seconds
+                  setTimeout(updateWeatherParameters, 10000);
+                },
+                error: function(error) {
+                  // This block executes if there is an error in the AJAX request
+                  console.error('Error fetching weather data:', error);
+                  // Retry the request after 10 seconds in case of an error
+                  setTimeout(updateWeatherParameters, 10000);
+                }
+              });
+           }
+    
+            updateWeatherParameters()
+            // setTimeout(updateWeatherParameters, 10000);
+          
+          // weather forecast tile:
+          document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.weather-forecast').forEach(forecast => {
+                    forecast.classList.remove('active'); // Hide all forecasts
+                    forecast.style.display = 'none';     // Set display none to all forecasts
+                });
+        
+                let target = this.getAttribute('data-target');
+                this.classList.add('active'); // Highlight the active tab
+        
+                let forecastSection = document.getElementById(target + '-forecast');
+                if (forecastSection) {
+                    forecastSection.classList.add('active');
+                    forecastSection.style.display = 'block'; // Show only the active forecast section
+                }
+            });
+        });
+        
+        // Initialize the default visible tab (Today)
+        document.querySelector('.tab-button[data-target="today"]').click();
+          });
+
+
+
+          var device_id = parseInt("{{ device_id }}", 10);
+          function updateWeatherData() {
+              $.ajax({
+                  url: `/farmer_dashboard/${device_id}/weather`,
+                  data: {
+                      'location': "Patna"// This can be dynamic based on user input or device settings
+                  },
+                  success: function (data) {
+                    // console.log("***")
+                    // console.log(data)
+                      var dateFromJSON = new Date(data.location.localtime);
+                      var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                      var formattedDate = dateFromJSON.toLocaleDateString('en-US', options);
+                      // Assuming 'data' is the JSON object returned from your Django view.
+                      $('.current-date').text(formattedDate);
+                      $('.location').text(data.location.name + ', ' + data.location.region);
+                      
+                      // Updating today's weather details
+                      // $('#today-forecast .temperature').text(data.today['Average Temperature'] + '°C');
+                      $('.today-weather-icon').attr('src', data.today['Icon']);
+                      $('.today-weather-text').text(data.today['Condition']);
+
+                      
+                      $('#today-forecast .parameter[title="Temperature"] span').text(data.today['Average Temperature'] + '°C');
+                      $('#today-forecast .parameter[title="Precipitation"] span').text(data.today['Total Precipitation'] + '%');
+                      $('#today-forecast .parameter[title="Humidity"] span').text(data.today['Average Humidity'] + '%');
+                      $('#today-forecast .parameter[title="Wind Speed"] span').text(data.today['Wind Speed (kph)'] + 'kph'); 
+                      
+                      // Similarly, update tomorrow's weather details
+                      $('#tomorrow-forecast .parameter[title="Temperature"] span').text(data.tomorrow['Average Temperature'] + '°C');
+                      $('#tomorrow-forecast .parameter[title="Precipitation"] span').text(data.tomorrow['Total Precipitation'] + '%');
+                      $('#tomorrow-forecast .parameter[title="Humidity"] span').text(data.tomorrow['Average Humidity'] + '%');
+                      $('#tomorrow-forecast .parameter[title="Wind Speed"] span').text(data.tomorrow['Wind Speed (kph)'] + 'kph'); 
+
+                      // and next week's weather details...
+                      var nextWeekData = data.next_week_summary;
+                      for(let i = 2; i < nextWeekData.length; i++) { // Start from index 2, which is the third element
+                          var day = nextWeekData[i];
+                          var tableIndex = i+1 ; // Adjust index for table, since we're skipping first two entries
+                          const nextWeekForecastDate = new Date(day["Date"]).toLocaleDateString('en-Us',{ day: 'numeric', month: 'long' })
+                          $(".date-" + (tableIndex) ).text(nextWeekForecastDate);
+                          $(".date-" + (tableIndex) + "-icon img").attr("src", day.Icon); // Update weather icon
+                          $(".date-" + (tableIndex) + "-temperature span").text(day["Avg Temp"] + "°C"); // Update temperature
+                          $(".date-" + (tableIndex) + "-humidity span").text(day.Humidity + "%"); // Update humidity
+                          $(".date-" + (tableIndex) + "-windspeed span").text(day["Wind Speed (kph)"] + "kph"); // Update wind speed
+                          $(".date-" + (tableIndex) + "-precipitation span").text(day.Precipitation + "%"); // Update precipitation
+                      }
+                      
+                  },
+                  error: function (error) {
+                      console.error('Error fetching weather data: ', error);
+                  }
+              });
+          }
+           updateWeatherData();
+
+
+           // Assuming the alerts are being fetched correctly, the code below will insert them into the carousel
+// Function to update the alerts carousel with new colors and datetime
+function updateAlertsCarousel() {
+    var alertsUrl = `/farmer_dashboard/${device_id}/alert_card`;
+    $.ajax({
+        url: alertsUrl,
+        type: 'GET',
+        dataType: 'json',
+        success: function(alerts) {
+            var $carouselInner = $('#alertCarousel .carousel-inner');
+            $carouselInner.empty(); // Clear existing items
+
+            alerts.forEach(function(alert, index) {
+                var isActive = index === 0 ? 'active' : '';
+                var backgroundColor = index % 2 === 0 ? '#E0F2F1' : '#FFE0B2'; // Example colors
+                var alertHtml = `
+                    <div class="carousel-item ${isActive}">
+                        <div class="card alert-card" style="background-color: ${backgroundColor};">
+                            <div class="alert-header">
+                                <span class="alert-icon">⚠️</span> <!-- Consider replacing with an actual image or icon -->
+                                <h3 class="alert-title" style="color:black;">${alert.alert_type} Alert</h3>
+                            </div>
+                            <div class="alert-body">
+                                <p class="alert-description">${alert.description}</p>
+                            </div>
+                            <div class="alert-footer">
+                                <p class="alert-timestamp">${new Date(alert.datetime).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $carouselInner.append(alertHtml);
+            });
+
+            // Reinitialize the carousel
+            $('#alertCarousel').carousel();
+        },
+        error: function(error) {
+            console.error('Failed to fetch alerts:', error);
+        }
+    });
+}
+
+// Call the function to update the alerts carousel
+updateAlertsCarousel();
+
+
+        </script>
+    
+  
+  </body>
+</html>

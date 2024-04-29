@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+<style type="text/css">
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .dataTables_wrapper {
+    width: auto;
+  }
+  td {
+    word-wrap: break-word;
+    white-space: normal !important;
+    max-width: 400px;
+  }
+  .dataTables_filter {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  .dataTables_filter label {
+    display: flex;
+    align-items: center;
+  }
+  .dataTables_filter input {
+    flex: 1;
+    box-sizing: border-box;
+    max-width: 200px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 576px) {
+    .dataTables_filter input {
+      width: 100%;
+      max-width: 100%;
+    }
+    .hide-on-zoom {
+      display: none;
+    }
+  }
+
+  @media (max-width: 120%) {
+    .hide-on-zoom {
+      display: none;
+    }    
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-7 grid-margin" id="map-section">
+    <div class="card">
+      <div class="card-body"  style="height: auto;">
+        <p class="card-title">Weather Monitoring Stations</p>
+        <div id="map" style = "height: 70vh;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5 grid-margin transparent" id="stations-section">
+    <div class="row">
+      <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+        <div class="card card-grey">
+          <div class="card-body"">
+            <p class="mb-4">Total Stations</p>
+            <p class="fs-30 mb-2">{{ devices|length }}</p>
+            <!--<p>2.00% (30 days)</p>-->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 stretch-card transparent">
+        <div class="card card-green">
+          <div class="card-body">
+            <p class="mb-4">Total Data Points</p>
+            <p class="fs-30 mb-2">{{ data_count }}</p>
+            <!--<p>0.22% (30 days)</p>-->
+          </div>
+        </div>
+      </div>
+    </div>
+ <div class="row" style="margin-top: 30px;">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body custom-table-container" >
+            <p class="card-title">Stations</p>
+            <div class="table-container table-responsive">
+              <table id="tbl_devices" class="table table-hover dt-responsive nowrap" style="width:100% ">
+                <thead>
+                  <tr>
+                    <th>Device</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for device in devices %}
+                  <tr onclick="location.href='/device/{{device.id}}'" style="cursor:pointer;">
+                    <td>{{device.name}}</td>
+                    <td class='address-cell'>{{ device.address|default_if_none:"" }} {% if device.city %}, {{ device.city }} {% endif %}{% if device.state %}, {{ device.state }} {% endif %}{% if device.country %}, {{ device.country }} {% endif %}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- device-report.html -->
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.7/js/responsive.bootstrap4.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8NF6A0H4_DlJT-D7IiKIeUy5Do1ZNjyM&callback=initMap" async defer></script>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      var table;
+    
+      function getCustomValueByWindowWidth() {
+        var windowWidth = window.innerWidth;
+        var result = "";
+    
+        if (windowWidth >1760 && windowWidth <= 1920 ) {
+          result = "35.7";
+        } else if (windowWidth > 1920) {
+          result = "39";
+        } else if (windowWidth >1536 && windowWidth <= 1760) {
+          result = "32";
+        } else if (windowWidth >1280 && windowWidth <= 1536) {
+          result = "27";
+        }
+        else if(windowWidth <= 1280){
+          result="18";
+        }
+    
+        return result;
+      }
+      function initializeDataTable() {
+        table = $("#tbl_devices").DataTable({
+          responsive: true,
+          ordering: true,
+          searching: true,
+          scrollY: getCustomValueByWindowWidth() + "vh",
+          scrollCollapse: false,
+          lengthChange: false,
+          pageLength: 10,
+          language: {
+            search: "",
+            searchPlaceholder: "Search"
+          },
+          columnDefs: [{
+            targets: [0, 1],
+            searchable: true
+          }],
+          dom: "Bfrtip",
+          buttons: [{
+            extend: "excelHtml5",
+            exportOptions: {
+              columns: [0, 1]
+            }
+          }, {
+            extend: "pdfHtml5",
+            exportOptions: {
+              columns: [0, 1]
+            }
+          }]
+        });
+      }
+    
+      initializeDataTable(); 
+    
+    function adjustSearchBoxWidth() {
+      var searchBox = document.querySelector('.dataTables_filter input');
+      var containerWidth = searchBox.parentElement.offsetWidth;
+      var computedWidth = Math.min(containerWidth, 400); 
+      searchBox.style.width = computedWidth + 'px';
+    }
+
+    window.addEventListener('load', adjustSearchBoxWidth);
+    window.addEventListener('resize', adjustSearchBoxWidth);
+  });
+
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        //center: {lat: 25, lng: 75},
+        //zoom: 8
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      });
+    
+
+      var devices = {{ devices|safe }};
+      var data_availability = {{ data_availability|safe }};
+      var expected_datapoints = {{ expected_datapoints|safe }};
+      var last_heard_map = {{last_heard_map|safe}};
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0; i < devices.length; i++) {
+        var devObj = devices[i];
+        var markerPosition = { lat: devObj.latitude, lng: devObj.longitude };
+
+        var marker_color = "red";
+        var marker_title = devObj.name + " (data availability is low!)";
+        actual_datapoints = data_availability[devObj.id];
+        if(actual_datapoints != undefined){
+          data_percent = actual_datapoints / expected_datapoints;
+          if(data_percent >= 0.9){
+            marker_color = "green";
+            marker_title = devObj.name;
+          }
+          else if(data_percent >= 0.7 && data_percent <0.9){
+            marker_color = "orange";
+            marker_title = devObj.name + " (data availability is between 70% to 90%!)";
+          }
+        }
+
+        last_heard = last_heard_map[devObj.id];
+        if(last_heard != undefined){
+          last_heard_duration = last_heard[1];
+          if(last_heard_duration > 3){
+            marker_color = "grey";
+            marker_title = devObj.name + " (Device may be in off state!)";
+          }
+        }
+
+        // Create a new marker object and set its position on the map
+        var marker = new google.maps.Marker({
+          position: markerPosition,
+          map: map,
+          title: marker_title,
+          url: '/device/' + devObj.id,
+          icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              strokeColor: marker_color,
+              scale: 8
+          }
+        });
+        
+        marker.addListener('click', function(marker) {
+          return function() {
+            window.location.href = marker.url;
+          };
+        }(marker));
+
+        var point = new google.maps.LatLng(devObj.latitude, devObj.longitude);
+        bounds.extend(point);
+      }
+      map.fitBounds(bounds);
+
+    }
+  </script>
+{% endblock %}

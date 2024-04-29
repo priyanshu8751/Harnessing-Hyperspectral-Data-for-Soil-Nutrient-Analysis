@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style type="text/css">
+.calendar_div {
+  text-align: right;
+  position: relative;
+}
+
+.calendar_input {
+  width: 124px;
+  border-radius: 5px;
+  border: none;
+  padding: 8px 15px;
+  background-color: white;
+  height: 32px;
+  margin-left: 28px;
+}
+
+.calendar_range_input {
+  width: 200px;
+  border-radius: 5px;
+  border: none;
+  padding: 8px;
+  background-color: white;
+  height: 32px;
+}
+
+.card-title-icon {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.select2-container .select2-choice {
+  display: block !important;
+  height: 36px !important;
+  white-space: nowrap !important;
+  line-height: 26px !important;
+}
+
+.select2-container--default .select2-selection--single {
+  padding: 5px 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 15px;
+  padding: 2px 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear {
+  padding-top: 1px;
+  padding-bottom: 10px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 grid-margin mb-3">
+    <div class="row">
+      <div class="col-12 col-xl-4">
+        <h3 class="font-weight-bold">Reports</h3>
+      </div>
+      <div class="col-12 col-xl-4">
+        <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
+          <div class="select2-wrapper">
+            <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#device_select" data-placeholder="Select an option" data-allow-clear="true" id="dd_device">
+              {% for dev in devices %}
+                {% if dev.id == device.id %}
+                  <option value="{{ dev.id }}" selected>{{ dev.name }}</option>
+                {% else %}
+                  <option value="{{ dev.id }}">{{ dev.name }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-4">
+        <div class="justify-content-start d-flex">
+          <div class="col_common calendar_div">
+            <div id="date_range_panel">
+              <div class="flex-row d-flex justify-content-center">
+                <div class="col-xl-12 col-lg-12 col-12 px-1">
+                  <div class="input-group input-daterange">
+                    <input type="text" name="daterange" id="input_daterange" class="calendar_range_input" value="" readonly />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <table id="temperature_table" class="table "></table>
+  </div>
+</div>
+
+<br />
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <table id="data-points-table" class="table">
+              <thead>
+                <tr>
+                  <th>Data Frequency (H:MM:SS)</th>
+                  <th>Total Expected Data Points</th>
+                  <th>Total Received Data Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="data-frequency-cell"></td>
+                  <td id="total-expected-points-cell"></td>
+                  <td id="total-received-points-cell"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--begin::Modal-->
+<div class="modal fade" tabindex="-1" id="device_select_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Device</h5>
+
+        <!--begin::Close-->
+        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+          <span class="svg-icon svg-icon-2x"></span>
+        </div>
+        <!--end::Close-->
+      </div>
+
+      <div class="modal-body">
+        <div class="col-12 col-xl-4">
+          <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
+            <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#device_select" data-placeholder="Select an option" data-allow-clear="true" id="dd_device_modal">
+              {% for dev in devices %}
+                {% if dev.id == device.id %}
+                  <option value="{{ dev.id }}" selected>{{ dev.name }}</option>
+                {% else %}
+                  <option value="{{ dev.id }}">{{ dev.name }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-inverse-primary" onclick="changeDevice();">Select</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end::Modal-->
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script src="{% static 'vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script type="text/javascript">
+  var param_group = {{ param_group|safe }};
+
+  var param_group_map = {};
+  for (var i in param_group) {
+    var params = param_group[i].params.split(',');
+    for (var j in params) {
+      param_group_map[params[j]] = param_group[i].id;
+    }
+  }
+
+  $(document).ready(function () {
+    $(function () {
+      $('input[name="daterange"]').daterangepicker(
+        {
+          opens: 'center',
+          locale: {
+            format: 'YYYY-MM-DD'
+          }
+        },
+        function (start, end, label) {
+          getRangeData(start._d, end._d);
+        }
+      );
+    });
+  });
+
+  var current_device = "{{ device.id }}";
+  $('#dd_device').on('change', function () {
+    var selectedDeviceId = $(this).val();
+    window.location.href = "/reports/" + selectedDeviceId;
+  });
+
+  function formatted_date(d) {
+    return (
+      d.getFullYear() +
+      "-" +
+      ("0" + (d.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + d.getDate()).slice(-2)
+    );
+  }
+
+  function getRangeData(startDate, endDate) {
+    var startDate = formatted_date(startDate);
+    var endDate = formatted_date(endDate);
+    var url = `/api/data_report/?device_id=${current_device}&date_gte=${startDate}&date_lte=${endDate}`;
+
+    $.get(url, function (response) {
+      var tableHTML = `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Expected Min</th>
+              <th>Expected Max</th>
+              <th>Expected Max Delta</th>
+              <th>Observed Min</th>
+              <th>Observed Max</th>
+              <th>Maximum Delta</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      for(var i in response["param_wise_data"]){
+        var obj = response["param_wise_data"][i];
+        var min_val_color = "black";
+        var max_val_color = "black";
+        var max_delta_color = "black";
+        if(obj.expected_min != "-" && obj.min_val < obj.expected_min){
+          min_val_color = "red";
+        }
+        if(obj.expected_max != "-" && obj.max_val != "-" && obj.max_val > obj.expected_max){
+          max_val_color = "red";
+        }
+        if(obj.expected_max != "-" && obj.max_val != "-" && obj.max_val > obj.expected_max){
+          max_val_color = "red";
+        }
+        if(obj.max_expected_delta != "-" && obj.max_delta != "-" && obj.max_delta > obj.max_expected_delta){
+          max_delta_color = "red";
+        }
+        tableHTML += `
+            <tr>
+              <td>${obj.param}</td>
+              <td>${obj.unit}</td>
+              <td>${obj.expected_min}</td>
+              <td>${obj.expected_max}</td>
+              <td>${obj.max_expected_delta}</td>
+              <td style="color: ${min_val_color};">${obj.min_val}</td>
+              <td style="color: ${max_val_color};">${obj.max_val}</td>
+              <td style="color: ${max_delta_color};">${obj.max_delta}</td>
+            </tr>
+          `;
+      }
+
+      tableHTML += `
+          </tbody>
+        </table>
+      `;
+
+      $("#temperature_table").html(tableHTML);
+
+      $("#data-frequency-cell").text(response.interval);
+      $("#total-expected-points-cell").text(response.expected_datapoints);
+      $("#total-received-points-cell").text(response.total_data_points + " (" + response.expected_datapoints_percent + "%)");
+    });
+  }
+</script>
+{% endblock %}

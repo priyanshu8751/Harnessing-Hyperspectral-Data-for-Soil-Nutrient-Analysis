@@ -1,0 +1,1 @@
+Cloud solution for SATCARD weather monitoring system.

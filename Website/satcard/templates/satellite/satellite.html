@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+<style>
+
+.satellite-container
+{
+    width: 100%;
+}
+
+.satellite-box
+{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.satellite-container h1
+{
+    color: #6C7383;
+    font-weight: 800;
+}
+
+.satellite-input label
+{
+    font-size: 1.3em;
+    font-weight: 500;
+    color: #6C7383;
+    
+}
+
+.satellite-input
+{
+    /* display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px; */
+    padding: 8px;
+}
+
+.satellite-input input
+{
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(175, 175, 175);
+    outline: none;
+}
+
+.satellite-input input:focus
+{
+    border: 2px solid #4B49AC;
+}
+
+.satellite-buttons
+{
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.satellite-buttons .show-map{
+    padding: 12px;
+    border: 2px solid #4B49AC;
+    background-color: #4B49AC;
+    color: white;
+    font-weight: 500;
+    border-radius: 20px;
+    transition: all 0.5s ease;
+}
+
+.satellite-buttons .show-map:hover
+{
+    background-color: #fff;
+    color: #4B49AC;
+}
+
+.satellite-buttons .show-neu{
+    padding: 12px;
+    border: 2px solid #4B49AC;
+    background-color: #fff;
+    color: #4B49AC;
+    font-weight: 500;
+    border-radius: 20px;
+    transition: all 0.5s ease;
+}
+
+.satellite-show-neu
+{
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.new-box
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    /* width: 100px; */
+    padding: 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.showcase-box
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+    
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="satellite-container">
+        <div class="satellite-box"><h1>Field Cordinates</h1>
+            <div class="satellite-input">
+                <label>Latitude : </label>
+                <input type="text" id="latitude" >
+            </div>
+            <div class="satellite-input">
+                <label>Longitude : </label>
+                <input type="text" id="longitude">
+            </div>
+            <div class="satellite-buttons">
+                <button class="show-map" id="submitButton">Show Map</button>
+                <button class="show-neu" id="submitButton2">Show Nutrients</button>
+            </div></div>
+        <div class="showcase-box"><div class="satellite-show-neu" id="satellite-show-neu">
+            </div>
+            <div id="chart"></div>
+            <div class="satellite-show-map" id="crop-map" style = "height: 45vh;width: 100%"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8NF6A0H4_DlJT-D7IiKIeUy5Do1ZNjyM&callback=initMap" async defer></script>
+<script type="text/javascript">
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get references to the input fields and the button
+    var latitudeInput = document.getElementById("latitude");
+    var longitudeInput = document.getElementById("longitude");
+    var submitButton = document.getElementById("submitButton");
+    let submitButon2 = document.getElementById("submitButton2");
+    // Add click event listener to the button
+    submitButton.addEventListener("click", function() {
+        // Get the values of latitude and longitude inputs
+        var lat = latitudeInput.value;
+        var long = longitudeInput.value;
+        if (lat && long) {
+            var map = new google.maps.Map(document.getElementById('crop-map'), {
+        center: {lat: Number(lat), lng: Number(long)},
+        zoom: 19,
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+    });
+
+    var icon = {
+        url: "https://w7.pngwing.com/pngs/731/25/png-transparent-location-icon-computer-icons-google-map-maker-marker-pen-cartodb-map-marker-heart-logo-color-thumbnail.png",
+        scaledSize: new google.maps.Size(40, 40), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    new google.maps.Marker({
+        position: {lat: Number(lat), lng: Number(long)},
+        map: map,
+        icon: icon,
+        title: "Tomato Farm"
+    });
+        } else {
+            alert("Please enter valid latitude and longitude values.");
+        }
+    });
+
+    submitButton2.addEventListener("click", function () {
+        submitButon2.textContent = "Loading...";
+        let newArea = document.getElementById("satellite-show-neu");
+        let tempChart = document.getElementById("chart");
+        tempChart.remove();
+        var newDiv = document.createElement("div");
+        newDiv.id = "chart";
+        
+        let showcaseBox = document.getElementsByClassName("showcase-box");
+        newArea.parentNode.insertBefore(newDiv, newArea.nextSibling);
+        newArea.innerHTML = "";
+
+    let response = fetch('http://127.0.0.1:8000/api/get-model-predictions/?latitude=${latitudeInput.value}&longitude=${longitudeInput.value}').then((response) => {
+  if (response.ok) {
+    return response.json();
+  }
+  throw new Error('Something went wrong');
+})
+.then((responseJson) => {
+  // Do something with the response
+  submitButon2.textContent = "Show Nutrients";
+  let newList = [];
+  for(let i of responseJson.model_output)
+  {
+
+    if(i<=0)
+    {
+        newList.push(i*(-1));
+    }
+    else
+    {
+        newList.push(i);
+    }
+  }
+//   console.log(newList);
+  let newArea = document.getElementById("satellite-show-neu");
+  newArea.innerHTML = `<div class="new-box">
+                <p>P : <span>${newList[0]}</span></p>
+            </div>
+            <div class="new-box">
+                <p>K : <span>${newList[1]}</span></p>
+            </div>
+            <div class="new-box">
+                <p>Mg : <span>${newList[2]}</span></p>
+            </div>
+            <div class="new-box">
+                <p>pH : <span>${newList[3]}</span></p>
+            </div>
+            <div class="new-box">
+                <p>Temp : <span>${newList[4]}</span></p>
+            </div>
+            <div class="new-box">
+                <p>Moisture : <span>${newList[5]}</span></p>
+            </div>` 
+    
+        
+    let temp = [];
+
+    for(let i in responseJson.band_value)
+    {
+        temp.push(i);
+    }
+    var options = {
+        series: [{
+            name: 'Band Values',
+            data: responseJson.band_value
+        }],
+        chart: {
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: true
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: temp,
+        tickAmount:3,
+        }
+    };
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+        chart.render(); 
+    })
+.catch((error) => {
+  console.log(error)
+});
+    })
+});
+
+
+
+</script>
+
+{% endblock %}

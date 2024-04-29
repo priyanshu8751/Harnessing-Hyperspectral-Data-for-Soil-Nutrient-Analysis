@@ -1,0 +1,13 @@
+# Home page:
+Adding map view with all devices markers (clickable)
+Adding “total data points” in summary view
+Search in device list view
+
+# Device detail page: 
+Csv export for raw data
+Check box for graph legends
+Show single parameter by default
+Keep tiles for parameter latest value: wind speed, wind direction, temperature, irradiance
+Data availability
+Add dots in line chart
+Remove version and deployment date

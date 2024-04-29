@@ -1,0 +1,620 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style type="text/css">
+  .calendar_div{
+    text-align: right;
+    position: relative;
+  }
+  .calendar_input{
+    width: 124px;
+    border-radius: 5px;
+    border: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 15px;
+    background-color: white;
+    height: 32px;
+    margin-left: 28px;
+  }
+
+  .calendar_range_input{
+    width: 200px;
+    border-radius: 5px;
+    border: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: white;
+    height: 32px;
+  }
+
+  .cal-icon-common {
+    background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 90% 50% no-repeat !important;
+  }
+
+  .calendar_input:active , .calendar_input:focus{
+    outline: none;
+  }
+
+  .card-title-icon {
+    font-size: 18px;
+    margin-top: 5px;
+  }
+
+
+  #compass {
+    background: url("{% static 'images/compass-transparent.png' %}");
+    background-size: cover;
+  }
+
+  .select2-container .select2-choice {
+    display: block !important;
+    height: 36px !important;
+    white-space: nowrap !important;
+    line-height: 26px !important;
+  }
+  
+  .select2-container--default .select2-selection--single {
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height:15px;
+    padding-top:2px;
+    padding-bottom:2px;
+  }
+  
+  .select2-container--default .select2-selection--single .select2-selection__clear{
+    padding-top:1px;
+    padding-bottom:10px;
+  }
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12 grid-margin" style="margin-bottom: 1.0rem;">
+    <div class="row">
+      <div class="col-12 col-xl-4 mb-4 mb-xl-0">
+        <!-- <h3 class="font-weight-bold" title="Version: {{ device.version  }} | Deployment Date: {{ device.deployment_date }}">{{ device.name }}</h3> -->
+        <!-- <button type="button" class="btn btn-light" data-toggle="modal" data-target="#device_select_modal" title="Click to change device" style="padding-left: 0px; font-weight: bold; font-size: 22px;">
+            {{ device.name }}
+        </button> -->
+
+        <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
+          <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="true" data-toggle="modal" data-target="#device_select_modal" title="Click to change device" style="border-radius: 6px; font-size: 16px;">
+           {{ device.name }}
+          </button>
+        </div>
+
+        <h6 class="font-weight-normal mb-0" style="margin-top: 7px; font-size: 12px; margin-left: 15px;"><span>{{device.address|default_if_none:""}}{% if device.city %}, {{device.city}} {% endif %}{% if device.state %}, {{device.state}} {% endif %}</span></h6>
+      </div>
+
+      <div class="col-12 col-xl-4">
+        <ul class="nav" id="myTab" role="tablist">
+           <li class="nav-item">
+           <button type="button" class="btn btn-sm btn-outline-primary btn-fw nav-link active" id="realtime-tab" data-toggle="tab" href="#realtime" role="tab" aria-controls="realtime" aria-selected="true" onclick="panel_display();">Realtime</button></li>
+           <li class="nav-item">
+           <button type="button" class="btn btn-sm btn-outline-primary btn-fw nav-link" id="daywise-tab" data-toggle="tab" href="#daywise" role="tab" aria-controls="daywise" aria-selected="false" style="margin-left: 20px;" onclick="panel_display(true);">Day Wise</button></li></li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-xl-3">
+       <div class="justify-content-start d-flex">
+        <div class="col-12 col_common calendar_div">
+            <div style="display: none;" id="date_range_panel">
+                <div class="flex-row d-flex justify-content-center">
+                  <div class="col-xl-12 col-lg-12 col-12 px-1">
+                    <div class="input-group input-daterange">
+                      <input type="text" name="daterange" id="input_daterange" class="calendar_range_input" style="width: 200px; font-size: 14px; padding-left: 5px;" value="" readonly />
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <input id="input_date" data-date-format="dd-mm-yyyy" size="16" style="color: black;" class="form-control calendar_input cal-icon-common form_datetime" type="text" readonly>
+        </div>
+       </div>
+      </div>
+
+      <div class="col-12 col-xl-1">
+        <button type="button" class="btn btn-sm btn-inverse-primary btn-icon" id="btn_export_realtime" title="Export data in CSV" onclick="exportCsv();">
+          <i class="mdi mdi-download"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-inverse-primary btn-icon" id="btn_export_daywise" title="Export data in CSV" onclick="exportCsvDaywise();" style="display: none;">
+          <i class="mdi mdi-download"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane fade show active" id="realtime" role="tabpanel" aria-labelledby="realtime-tab">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card" style="background-color: transparent;">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card card-grey" style="border-radius: 10px;">
+                <div class="card-body" style="padding: 0.8rem;">
+                  <p class="mb-4">Temperature <i class="mdi mdi-oil-temperature card-title-icon"></i> </p>
+                  <p class="fs-30 mb-2" id="p_temperature"></p>
+                  <!-- <p>2.00% (30 days)</p> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-yellow" style="border-radius: 10px;">
+                <div class="card-body" style="padding: 0.8rem;">
+                  <p class="mb-4">Irradiance <i class="mdi mdi-white-balance-sunny card-title-icon"></i></p>
+                  <p class="fs-30 mb-2" id="p_irradiance"></p>
+                  <!-- <p>2.00% (30 days)</p> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-pink" style="border-radius: 10px;">
+                <div class="card-body" style="padding: 0.8rem;">
+                  <p class="mb-4">Wind Speed <i class="mdi mdi-weather-windy card-title-icon"></i></p>
+                  <p class="fs-30 mb-2" id="p_wind_speed"></p>
+                  <!-- <p>2.00% (30 days)</p> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-sky-blue" style="border-radius: 10px;">
+                <div class="card-body" style="padding: 0.8rem;">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="mb-4">Wind Direction <i class="mdi mdi-directions-fork card-title-icon"></i> </p>
+                      <p class="fs-30 mb-2" id="p_wind_dir"></p>
+                    </div>
+                    <div class="col-md-6">
+                      <canvas id="compass" height=80 width=80></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+    {% for grp in param_group %}
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-11">
+              <p class="card-title">{{grp.title}}</p>
+            </div>
+          </div>
+          <div id="div_chart_{{grp.id}}"></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="tab-pane fade" id="daywise" role="tabpanel" aria-labelledby="daywise-tab">
+   <div class="row">
+    {% for grp in param_group %}
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-11">
+              <p class="card-title">{{grp.title}}</p>
+            </div>
+          </div>
+          <div id="div_daywise_chart_{{grp.id}}"></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+<!--begin::Modal-->
+<div class="modal fade" tabindex="-1" id="device_select_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Device</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-10">
+                    <label for="" class="form-label">Device</label>
+                    <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#device_select_modal" data-placeholder="Select an option" data-allow-clear="true" id="dd_device">
+                      {% for dev in devices %}
+                        {% if dev.id == device.id %}
+                          <option value="{{ dev.id }}" selected>{{ dev.name }}</option>
+                        {% else %}
+                          <option value="{{ dev.id }}">{{ dev.name }}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-inverse-primary" onclick="changeDevice();">Select</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Modal-->
+
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <script src="{% static 'vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}" type="text/javascript"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script type="text/javascript">
+
+    var param_group = {{param_group|safe}};
+
+    var param_group_map = {};
+    for(var i in param_group){
+      var params = param_group[i].params.split(',');
+      for(var j in params){
+        param_group_map[params[j]] = param_group[i].id;
+      }
+    }
+
+    $( document ).ready(function() {
+
+      $('#input_date').datepicker({
+        autoclose: true,
+        endDate: new Date(),
+        todayHighlight: true
+      });
+      $('#input_date').datepicker('update', new Date());
+      $('#input_date').val(moment().format('DD-MM-YYYY'));
+
+
+      $(function() {
+        $('input[name="daterange"]').daterangepicker({
+          // "startDate": new Date(),
+          // "endDate": new Date(),
+          opens: 'center',
+          locale: {
+            format: 'YYYY-MM-DD'
+          }
+        },
+        function(start, end, label) {
+            //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            getRangeData(start._d, end._d);
+        });
+      });
+
+       $('#dd_device').select2({
+        dropdownCssClass: "bigdrop"
+       });
+
+      $('#input_date').datepicker().on('changeDate', function(ev){
+        plotData(ev.date);
+      });
+      plotData(new Date());
+    });
+
+    var current_device = "{{ device.id }}";
+
+    function formatted_date(d) {
+      return d.getFullYear()
+        + "-" + ("0" + (d.getMonth()+1)).slice(-2)
+        + "-" + ("0" + d.getDate()).slice(-2);
+    };
+
+    function changeDevice(){
+      var selected_dev = $("#dd_device").val();
+      window.location.href = "/device/" + selected_dev;
+    }
+
+    function panel_display(show_daywise=false){
+      var day_date_display = 'block';
+      var range_date_display = 'none';
+      var realtime_panel = 'block';
+      var btn_export_realtime_display = 'block';
+      var btn_export_daywise_display = 'none';
+      if(show_daywise) {
+        day_date_display = 'none';
+        range_date_display = 'block';
+        realtime_panel = 'none';
+        btn_export_daywise_display = 'block';
+        btn_export_realtime_display = 'none';
+      }
+      $("#input_date").css('display', day_date_display);
+      $("#date_range_panel").css('display', range_date_display);
+      $("#realtime").css('display', realtime_panel);
+      $("#btn_export_realtime").css('display', btn_export_realtime_display);
+      $("#btn_export_daywise").css('display', btn_export_daywise_display);
+    }
+
+    function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
+      //variables to be used when creating the arrow
+      var headlen = 8;
+      var angle = Math.atan2(toy-fromy,tox-fromx);
+   
+      ctx.save();
+      ctx.strokeStyle = color;
+   
+      //starting path of the arrow from the start square to the end square
+      //and drawing the stroke
+      ctx.beginPath();
+      ctx.moveTo(fromx, fromy);
+      ctx.lineTo(tox, toy);
+      ctx.lineWidth = arrowWidth;
+      ctx.stroke();
+   
+      //starting a new path from the head of the arrow to one of the sides of
+      //the point
+      ctx.beginPath();
+      ctx.moveTo(tox, toy);
+      ctx.lineTo(tox-headlen*Math.cos(angle-Math.PI/7),
+                 toy-headlen*Math.sin(angle-Math.PI/7));
+   
+      //path from the side point of the arrow, to the other side point
+      ctx.lineTo(tox-headlen*Math.cos(angle+Math.PI/7),
+                 toy-headlen*Math.sin(angle+Math.PI/7));
+   
+      //path from the side point back to the tip of the arrow, and then
+      //again to the opposite side point
+      ctx.lineTo(tox, toy);
+      ctx.lineTo(tox-headlen*Math.cos(angle-Math.PI/7),
+                 toy-headlen*Math.sin(angle-Math.PI/7));
+   
+      //draws the paths created above
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function setCompass(degrees) {
+      var x, y, r, ctx, radians;
+      ctx = window.compass.getContext("2d");
+      // subtract 90 so that north is up then convert to radians
+      radians = 0.0174533 * (degrees - 90);
+      
+      // calc compass centre 
+      x = ctx.canvas.width / 2;
+      y = ctx.canvas.height / 2; 
+      r = x * 0.45;
+      var x1 = x + r * Math.cos(radians)
+      var y1 = y + r * Math.sin(radians)
+      
+      // clear 
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height );
+
+      // // optional styling
+      // ctx.strokeStyle = "rgba(0, 40, 15, 0.8)";
+      // ctx.fillStyle = "rgba(0, 40, 15, 0.6)";
+
+      // // draw compass needle
+      // ctx.lineWidth = 5;
+      // ctx.beginPath();
+      // ctx.moveTo(x, y);
+      // ctx.lineTo(x1, y1);
+      // ctx.stroke();
+
+      drawArrow(ctx, x, y, x1, y1, 2, '#800000');
+
+    }
+
+    function exportCsv(){
+      var date = $("#input_date").data('datepicker').getFormattedDate('yyyy-mm-dd');
+      if(date == ""){
+        date = moment().format('YYYY-MM-DD')
+      }
+      var start_time = date + "T00:00:00Z";
+      var end_time = date + "T23:59:59Z";
+      var url = `/api/data/?device_id=${current_device}&timestamp__gte=${start_time}&timestamp__lte=${end_time}&format=csv`;
+      window.open(url, '_blank');
+    }
+
+    function exportCsvDaywise(){
+      var daterange_obj = $('#input_daterange').data('daterangepicker');
+      var startDate = formatted_date(daterange_obj.startDate._d);
+      var endDate = formatted_date(daterange_obj.endDate._d);
+      var url = `/api/daysummary/?device_id=${current_device}&date__gte=${startDate}&date__lte=${endDate}&format=csv`;
+      window.open(url, '_blank');
+    }
+
+    function plotChart(id_val, data_map, timestamps){
+      var chart_data = [];
+      var layout = {
+        legend: {
+          orientation: "v",
+          x: 1.1,
+          xanchor: 'left',
+          y: 1,
+          font: {
+            size: 9
+          },
+          //borderwidth: 1
+        },
+        hovermode: "x unified"
+      };
+      var i = 1;
+      $.each(data_map, function(param, data_list) {
+        var trace = {
+          type: "scatter",
+          name: param,
+          x: timestamps,
+          y: data_list,
+          symbol: 'circle'
+          //line: {color: '#17BECF'}
+        }
+        layout['yaxis'] = {title: param}
+        chart_data.push(trace);
+        i+= 1;
+      });
+      layout['xaxis'] = {title: "Time"}
+
+      Plotly.newPlot('div_chart_' + id_val, chart_data, layout);
+    }
+
+    function plotBarChart(id_val, data_map, dates){
+      var chart_data = [];
+      var layout = {
+        legend: {
+          orientation: "v",
+          x: 1.1,
+          xanchor: 'left',
+          y: 1,
+          font: {
+            size: 9
+          }
+        },
+      };
+      var i = 1;
+      $.each(data_map, function(param, data_list) {
+        var trace = {
+          type: "bar",
+          name: param,
+          x: dates,
+          y: data_list
+        }
+        layout['yaxis'] = {title: param}
+        chart_data.push(trace);
+        i+= 1;
+      });
+      layout['xaxis'] = {title: "Date", tickformat: '%d, %b', automargin: true}
+
+      Plotly.newPlot('div_daywise_chart_' + id_val, chart_data, layout);
+    }
+
+    function plotData(date){
+      // var default_params = ["temperature", "wind_speed"];
+      date = formatted_date(date);
+      var start_time = date + "T00:00:00Z";
+      var end_time = date + "T23:59:59Z";
+      var url = `/api/data/?device_id=${current_device}&timestamp__gte=${start_time}&timestamp__lte=${end_time}`;
+      $.get(url, function(response){ 
+        timestamps = [];
+        data_map = {};
+        var temperature = '-';
+        var irradiance = '-';
+        var wind_speed = '-';
+        var wind_dir = '-';
+        var keys_to_exclude = ["id", "device"];
+        for(var i in response){
+          obj = response[i];
+          $.each(obj, function(param, val) {
+            if(!keys_to_exclude.includes(param)){
+              if(param == "timestamp"){
+                timestamps.push(val);
+              }
+              else{
+                if (!data_map.hasOwnProperty(param)) {
+                  data_map[param] = [];
+                }
+                data_map[param].push(val);
+              }
+ 
+              if(param == "temperature"){
+                temperature = val;
+              }
+              if(param == "irradiance"){
+                irradiance = val;
+              }
+              if(param == "wind_speed"){
+                wind_speed = val;
+              }
+              if(param == "wind_direction"){
+                wind_dir = val;
+                setCompass(val);
+              }
+
+            }
+          });
+        }
+        $("#p_temperature").html(temperature + " <span style='font-size: 14px;'>°C</span>");
+        $("#p_irradiance").html(irradiance + " <span style='font-size: 14px;'>W/m2</span>");
+        $("#p_wind_speed").html(wind_speed + " <span style='font-size: 14px;'>km/h</span>");
+        $("#p_wind_dir").html(wind_dir + "<span>°</span>");
+
+        var graph_list = {};
+        Object.keys(data_map).forEach(function(param) {
+          if (param_group_map.hasOwnProperty(param)) {
+            var id_val = param_group_map[param];
+            if(!graph_list.hasOwnProperty(id_val)){
+              graph_list[id_val] = {};
+            }
+            graph_list[id_val][param] = data_map[param];
+          }
+        });
+
+        Object.keys(graph_list).forEach(function(id_val) {
+          plotChart(id_val, graph_list[id_val], timestamps);
+        });
+
+      });
+    }
+
+
+    function getRangeData(startDate, endDate){
+      var startDate = formatted_date(startDate);
+      var endDate = formatted_date(endDate);
+      var url = `/api/daysummary/?device_id=${current_device}&date__gte=${startDate}&date__lte=${endDate}`;
+      $.get(url, function(response){ 
+        data_map = {};
+        var dates = [];
+        for(var i in response){
+          obj = response[i];
+          var param = obj.param;
+          var date = obj.date;
+          var value = obj.value;
+          if(!data_map.hasOwnProperty(param)){
+              data_map[param] = [];
+          }
+          data_map[param].push(value);
+          if($.inArray(date, dates) == -1){
+            dates.push(date);
+          }
+        }
+
+        var graph_list = {};
+        Object.keys(data_map).forEach(function(param) {
+          if (param_group_map.hasOwnProperty(param)) {
+            var id_val = param_group_map[param];
+            if(!graph_list.hasOwnProperty(id_val)){
+              graph_list[id_val] = {};
+            }
+            graph_list[id_val][param] = data_map[param];
+          }
+        });
+
+        Object.keys(graph_list).forEach(function(id_val) {
+          plotBarChart(id_val, graph_list[id_val], dates);
+        });
+
+      });
+    }
+
+
+  </script>
+{% endblock %}

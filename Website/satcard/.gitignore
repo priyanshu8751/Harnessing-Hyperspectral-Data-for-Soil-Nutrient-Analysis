@@ -1,0 +1,5 @@
+*.pyc
+db.sqlite3
+satcard.db
+**/.DS_Store
+static/.DS_Store

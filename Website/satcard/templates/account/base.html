@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Revin</title>
+		<link rel="stylesheet" href="{% static 'css/feather/feather.css' %}">
+    	<link rel="stylesheet" href="{% static 'css/ti-icons/css/themify-icons.css' %}">
+    	<link rel="stylesheet" href="{% static 'css/vendor.bundle.base.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    	<link rel="shortcut icon" href="{% static 'images/favicon.png' %}" />
+		{% block extrastyle %}
+		{% endblock %}
+	</head>
+	<body>
+		{% block content %}
+		{% endblock %}
+
+		<script src="{% static 'js/vendor.bundle.base.js' %}"></script>
+   	 	<script src="{% static 'js/template.js' %}"></script>
+		{% block extrajs %}
+		{% endblock %}
+	</body>
+</html>
