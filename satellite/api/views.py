@@ -48,9 +48,11 @@ def funs(latitude, longitude):
     
     sub3 = min(data_interpolated) - 400
     
-    model1 = tf.keras.models.load_model("data/Nutrients_Model")
+    model1 = tf.keras.models.load_model("data/Nutrients_Model3")
+    scaler = joblib.load('data/scaler2.save') 
     input_data_reshaped = np.reshape((data_interpolated - sub3), (-1, 25, 1))
-    val1 = model1.predict([input_data_reshaped])
+    val4 = scaler.transform(np.reshape(data_interpolated - sub3, (-1, 25)))
+    val1 = model1.predict(val4)
     
     # maintain data from 0.1 to 0.2
     sub2 = (2 * min(data_interpolated)) - max(data_interpolated)
